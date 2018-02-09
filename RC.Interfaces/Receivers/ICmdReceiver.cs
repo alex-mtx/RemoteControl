@@ -1,6 +1,6 @@
 ﻿namespace RC.Interfaces.Receivers
 {
-    public interface ICommandReceiver<out T>
+    public interface ICmdReceiver<out T>
     {
         T Receive();
     }

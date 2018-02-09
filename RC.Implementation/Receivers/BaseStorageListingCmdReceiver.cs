@@ -5,7 +5,7 @@ using RC.Interfaces.Receivers;
 
 namespace RC.Implementation.Receivers
 {
-    public class BaseStorageListingCmdReceiver : ICommandReceiver<ICmd>
+    public class BaseStorageListingCmdReceiver : ICmdReceiver<ICmd>
     {
         private readonly IFactory<ICmd, StorageListingCmdType> _factory;
 

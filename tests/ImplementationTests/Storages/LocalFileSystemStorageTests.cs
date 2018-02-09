@@ -1,18 +1,15 @@
-﻿using RC.Implementation.Storages;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using RC.Implementation.Storages;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ImplementationTests.Storages
 {
     [TestFixture]
     public class LocalFileSystemStorageTests
     {
-        [Test]
+        [Test(TestOf = typeof(LocalFileSystemStorage))]
         public void Lists_Its_Contents()
         {
             var storageUri = new Uri(AppDomain.CurrentDomain.BaseDirectory);

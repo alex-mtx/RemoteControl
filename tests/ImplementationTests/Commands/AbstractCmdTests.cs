@@ -15,24 +15,18 @@ namespace ImplementationTests.Commands
 
             var cmd = new DummyCmd(appenderMock.Object);
             cmd.Run();
-            appenderMock.Verify(x => x.Append<object>(null), Times.Once);
+            appenderMock.Verify(x => x.Append("ran"), Times.Once);
         }
 
-
-        class DummyCmd : AbstractCmd<object>
+        private class DummyCmd : AbstractCmd<CmdParametersSet, string>
         {
-            public DummyCmd(IResultAppender resultAppender) : base(resultAppender)
+            public DummyCmd(IResultAppender resultAppender) : base(resultAppender,new CmdParametersSet())
             {
             }
-
-            protected override void AppendResult(object result)
+                      
+            protected override string RunCommand()
             {
-                base.AppendResult(result);
-            }
-
-            protected override object RunCommand()
-            {
-                return null;
+                return "ran";
             }
         }
     }

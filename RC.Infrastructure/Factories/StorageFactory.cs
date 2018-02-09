@@ -9,20 +9,20 @@ using System.Threading.Tasks;
 
 namespace RC.Infrastructure.Factories
 {
-    public static class StorageFactory
+    public class StorageFactory : IStorageFactory
     {
-        private static readonly IDictionary<StorageType, Func<Uri, IStorage<IStorageObject>>> _map;
+        private readonly IDictionary<StorageType, Func<Uri, IStorage<IStorageObject>>> _map;
 
-        static StorageFactory()
+        public StorageFactory()
         {
             _map = BuildMap();
         }
-        public static IStorage<IStorageObject> Create(StorageType type, Uri storageUri)
+        public IStorage<IStorageObject> Create(StorageType type, Uri storageUri)
         {
             return _map[type](storageUri);
         }
 
-        private static IDictionary<StorageType, Func<Uri,IStorage<IStorageObject>>> BuildMap()
+        private IDictionary<StorageType, Func<Uri,IStorage<IStorageObject>>> BuildMap()
         {
             return new Dictionary<StorageType, Func<Uri, IStorage<IStorageObject>>>
             {

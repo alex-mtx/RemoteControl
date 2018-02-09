@@ -1,0 +1,22 @@
+﻿using RC.Interfaces.Appenders;
+using RC.Interfaces.Factories;
+using RC.Interfaces.Storages;
+using System.Collections.Generic;
+
+namespace RC.Implementation.Commands.Storages
+{
+    public class FileSystemContentsListingCmd : AbstractCmd<StorageCmdParamSet,IEnumerable<IStorageObject>>
+    {
+        protected readonly IStorage<IStorageObject> _storage;
+
+        public FileSystemContentsListingCmd(IStorageFactory storageFactory , IResultAppender resultAppender, StorageCmdParamSet args) : base(resultAppender,args)
+        {
+            _storage = storageFactory.Create(StorageType.FileSystem,args.Uri);
+        }
+
+        protected override IEnumerable<IStorageObject> RunCommand()
+        {
+            return _storage.Contents();
+        }
+    }
+}

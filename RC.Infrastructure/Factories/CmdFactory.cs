@@ -9,28 +9,24 @@ namespace RC.Infrastructure.Factories
 {
     public class CmdFactory : ICmdFactory
     {
-        private readonly IDictionary<CmdType, Func<Uri, ICmd>> _Map;
+        private IDictionary<CmdType, Func<IDictionary<string, string>, ICmd>> _map = new Dictionary<CmdType, Func<IDictionary<string, string>, ICmd>>();
 
-        public CmdFactory()
+        public  CmdFactory()
         {
-            _Map = BuildMap();
+            BuildMap();
         }
         public ICmd Create(CmdType cmdType, IDictionary<string, string> cmdParams)
         {
-            var uri = new Uri(cmdParams["uri"]);
-            return _Map[cmdType](uri);
+            return _map[cmdType](cmdParams);
 
 
         }
 
-        protected IDictionary<CmdType, Func<Uri, ICmd>> BuildMap()
+        private void BuildMap()
         {
             var resultAppender = ResultAppenderManager.Instance.ResultAppender;
 
-            return new Dictionary<CmdType, Func<Uri, ICmd>>
-                {
-                    { CmdType.StorageContentsListing, (Uri uri)=> { return new FileSystemContentsListingCmd(StorageFactory.Create(StorageType.FileSystem,uri),resultAppender); } }
-                };
+           // _map.Add(CmdType.StorageContentsListing, (Dictionary<string, string> cmdParams) => { return new FileSystemContentsListingCmd(new StorageFactory(), resultAppender, cmdParams); });
         }
     }
 

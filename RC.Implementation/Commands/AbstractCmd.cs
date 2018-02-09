@@ -1,30 +1,28 @@
 ﻿using RC.Interfaces.Appenders;
 using RC.Interfaces.Commands;
+using System;
 using System.Collections.Generic;
 
 namespace RC.Implementation.Commands
 {
-    public abstract class AbstractCmd<TResult>: ICmd
+    public abstract class AbstractCmd<TParamSet, TResult> : ICmd
     {
         protected readonly IResultAppender _resultAppender;
-        private IDictionary<string, string> _params = new Dictionary<string, string>();
-        public virtual IDictionary<string, string> Params
+        TParamSet _paramSet;
+
+        public AbstractCmd(IResultAppender resultAppender, TParamSet args)
         {
-            get { return _params; }
-            set { _params = value; }
+            _resultAppender = resultAppender;
+            _paramSet = args;
         }
 
-        public AbstractCmd(IResultAppender resultAppender) => _resultAppender = resultAppender;
-       
-        protected virtual void AppendResult(TResult result)
-        {
-            _resultAppender.Append(result);
-        }
+      
 
-        public void Run()
+        public virtual void Run()
         {
             var result = RunCommand();
-            AppendResult(result);
+            _resultAppender.Append(result);
+
         }
 
         protected abstract TResult RunCommand();

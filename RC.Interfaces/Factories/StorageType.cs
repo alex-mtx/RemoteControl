@@ -1,4 +1,4 @@
-﻿namespace RC.Infrastructure.Factories
+﻿namespace RC.Interfaces.Factories
 {
     public enum StorageType
     {

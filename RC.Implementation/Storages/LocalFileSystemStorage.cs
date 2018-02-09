@@ -15,7 +15,7 @@ namespace RC.Implementation.Storages
 
         public override IEnumerable<SimpleStorageObject> Contents()
         {
-            var entries = Directory.EnumerateFileSystemEntries(_setup.Uri.OriginalString, "*", SearchOption.AllDirectories);
+            var entries = Directory.EnumerateFileSystemEntries(_setup.Uri.LocalPath, "*", SearchOption.AllDirectories);
             return entries.Select(path => new SimpleStorageObject(new Uri(path)));
         }
     }
