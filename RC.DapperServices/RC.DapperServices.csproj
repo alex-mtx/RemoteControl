@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3BBC8EAD-DE61-41D0-8AB2-8CECCD5DD10B}</ProjectGuid>
+    <ProjectGuid>{AE1A2B3C-089F-4CD4-9ACC-C97338905F5D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RC.Implementation</RootNamespace>
-    <AssemblyName>RC.Implementation</AssemblyName>
+    <RootNamespace>RC.DapperServices</RootNamespace>
+    <AssemblyName>RC.DapperServices</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -59,28 +58,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Appenders\DebugConsoleOutput.cs" />
-    <Compile Include="Appenders\GeneralResultAppender.cs" />
-    <Compile Include="Commands\AbstractCmd.cs" />
-    <Compile Include="Commands\CmdParametersSet.cs" />
-    <Compile Include="Commands\Storages\FileSystemContentsListingCmd.cs" />
-    <Compile Include="Commands\Storages\StorageCmdParamSet.cs" />
-    <Compile Include="Receivers\AbstractCmdReceiver.cs" />
-    <Compile Include="Storages\LocalFileSystemStorage.cs" />
+    <Compile Include="AbstractRepository.cs" />
+    <Compile Include="StorageCmdParamSetRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Storages\AbstractStorage.cs" />
-    <Compile Include="Storages\BasicStorageSetup.cs" />
-    <Compile Include="Storages\SimpleStorageObject.cs" />
-    <Compile Include="Storages\StorageListingCmdType.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RC.Implementation\RC.Implementation.csproj">
+      <Project>{3bbc8ead-de61-41d0-8ab2-8ceccd5dd10b}</Project>
+      <Name>RC.Implementation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RC.Interfaces\RC.Interfaces.csproj">
       <Project>{f89dd292-bd82-47a8-81d1-e909bd5c9d3b}</Project>
       <Name>RC.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RC.JsonServices\RC.JsonServices.csproj">
-      <Project>{e6ee7e84-52d3-4199-8d24-831667af56a2}</Project>
-      <Name>RC.JsonServices</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,13 +1,8 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
+using RC.Implementation.Receivers;
 using RC.Interfaces.Commands;
 using RC.Interfaces.Receivers;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ImplementationTests.Receivers
 {
@@ -15,26 +10,16 @@ namespace ImplementationTests.Receivers
     public class CmdReceiverTests
     {
         [Test]
-        public void TestMethod()
+        public void StartReceiving_When_A_Cmd_Is_Fetch_Should_Execute_Client_Delegate()
         {
-            var cmdMock = new Moq.Mock<ICmd>();
-            cmdMock.Setup(x => x.Run()).Callback(() => { Debug.WriteLine("Run"); });
-
+            var cmdMock = new Mock<ICmd>();
             var receiver = new DummyCmdReceiver(cmdMock.Object);
-            receiver.Observable.CollectionChanged += Observable_CollectionChanged;
+            receiver.StartReceiving((ICmd cmd) => { cmd.Run(); });
+
+            cmdMock.Verify(cmd => cmd.Run(), Times.Once);
         }
 
-        private void Observable_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RunCommand(ICmd cmd)
-        {
-
-        }
-
-        private class DummyCmdReceiver : ICmdReceiver<ICmd>
+        private class DummyCmdReceiver : AbstractCmdReceiver
         {
             private ICmd _cmd;
 
@@ -43,17 +28,11 @@ namespace ImplementationTests.Receivers
                 _cmd = cmd;
             }
 
-            public ObservableCollection<ICmd> Observable { get; private set; }
-            public ICmd Receive()
+            public override void StartReceiving(CmdReceivedEventHandler handler)
             {
-                return _cmd;
+                handler(_cmd);
             }
-
-            public void ReceiveAndPublish()
-            {
-                //... fetch the cmd from anywhere....
-                Observable.Add(_cmd);
-            }
+            
         }
     }
 }

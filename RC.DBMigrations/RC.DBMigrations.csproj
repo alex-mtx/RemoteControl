@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3BBC8EAD-DE61-41D0-8AB2-8CECCD5DD10B}</ProjectGuid>
+    <ProjectGuid>{3820A9D2-37C8-4E91-B70F-3FF328583007}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RC.Implementation</RootNamespace>
-    <AssemblyName>RC.Implementation</AssemblyName>
+    <RootNamespace>RC.DBMigrations</RootNamespace>
+    <AssemblyName>RC.DBMigrations</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,6 +48,12 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentMigrator, Version=1.6.2.0, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentMigrator.1.6.2\lib\40\FluentMigrator.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentMigrator.Runner, Version=1.6.2.0, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentMigrator.Runner.1.6.2\lib\40\FluentMigrator.Runner.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -59,28 +64,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Appenders\DebugConsoleOutput.cs" />
-    <Compile Include="Appenders\GeneralResultAppender.cs" />
-    <Compile Include="Commands\AbstractCmd.cs" />
-    <Compile Include="Commands\CmdParametersSet.cs" />
-    <Compile Include="Commands\Storages\FileSystemContentsListingCmd.cs" />
-    <Compile Include="Commands\Storages\StorageCmdParamSet.cs" />
-    <Compile Include="Receivers\AbstractCmdReceiver.cs" />
-    <Compile Include="Storages\LocalFileSystemStorage.cs" />
+    <Compile Include="Migration_00001_FirstVersion.cs" />
+    <Compile Include="DebugMigrator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Storages\AbstractStorage.cs" />
-    <Compile Include="Storages\BasicStorageSetup.cs" />
-    <Compile Include="Storages\SimpleStorageObject.cs" />
-    <Compile Include="Storages\StorageListingCmdType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RC.Interfaces\RC.Interfaces.csproj">
-      <Project>{f89dd292-bd82-47a8-81d1-e909bd5c9d3b}</Project>
+      <Project>{F89DD292-BD82-47A8-81D1-E909BD5C9D3B}</Project>
       <Name>RC.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RC.JsonServices\RC.JsonServices.csproj">
-      <Project>{e6ee7e84-52d3-4199-8d24-831667af56a2}</Project>
-      <Name>RC.JsonServices</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

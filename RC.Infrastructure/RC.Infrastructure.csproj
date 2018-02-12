@@ -50,6 +50,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -61,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Factories\CmdFactory.cs" />
     <Compile Include="Factories\AbstractFactory.cs" />
+    <Compile Include="Factories\DBConnectionFactory.cs" />
     <Compile Include="Factories\StorageFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultAppenderManager.cs" />

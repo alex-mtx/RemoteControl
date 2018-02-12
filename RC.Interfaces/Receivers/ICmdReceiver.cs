@@ -1,7 +1,11 @@
-﻿namespace RC.Interfaces.Receivers
+﻿using RC.Interfaces.Commands;
+
+namespace RC.Interfaces.Receivers
 {
-    public interface ICmdReceiver<out T>
+    public delegate void CmdReceivedEventHandler(ICmd cmd);
+
+    public interface ICmdReceiver
     {
-        T Receive();
+        void StartReceiving(CmdReceivedEventHandler handler);
     }
 }

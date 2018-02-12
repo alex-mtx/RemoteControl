@@ -18,7 +18,7 @@ namespace ImplementationTests.Commands
             var storageMock = new Mock<IStorage<IStorageObject>>();
             var appenderMock = new Mock<IResultAppender>();
             var storageFactoryMock = new Mock<IStorageFactory>();
-            var cmdParam = new StorageCmdParamSet { Uri = uri };
+            var cmdParam = new StorageCmdParamSet { Path = uri.ToString() };
             storageFactoryMock.Setup(x => x.Create(StorageType.FileSystem, uri)).Returns(storageMock.Object);
             var cmd = new FileSystemContentsListingCmd(storageFactoryMock.Object, appenderMock.Object, cmdParam);
 

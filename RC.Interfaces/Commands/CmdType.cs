@@ -2,6 +2,8 @@
 {
     public enum CmdType
     {
-        StorageContentsListing
+        Unknown = 0,
+        StorageContentsListing = 1
+
     }
 }

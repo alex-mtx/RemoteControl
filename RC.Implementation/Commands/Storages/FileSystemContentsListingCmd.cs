@@ -1,6 +1,7 @@
 ﻿using RC.Interfaces.Appenders;
 using RC.Interfaces.Factories;
 using RC.Interfaces.Storages;
+using System;
 using System.Collections.Generic;
 
 namespace RC.Implementation.Commands.Storages
@@ -11,7 +12,7 @@ namespace RC.Implementation.Commands.Storages
 
         public FileSystemContentsListingCmd(IStorageFactory storageFactory , IResultAppender resultAppender, StorageCmdParamSet args) : base(resultAppender,args)
         {
-            _storage = storageFactory.Create(StorageType.FileSystem,args.Uri);
+            _storage = storageFactory.Create(StorageType.FileSystem,new Uri(args.Path));
         }
 
         protected override IEnumerable<IStorageObject> RunCommand()
