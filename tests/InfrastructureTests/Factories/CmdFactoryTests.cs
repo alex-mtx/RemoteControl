@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using RC.Implementation.Commands;
+using RC.Implementation.Commands.Storages;
 using RC.Infrastructure.Factories;
 using RC.Interfaces.Factories;
 using System;
@@ -13,15 +14,16 @@ namespace InfrastructureTests.Factories
         [Test]
         public void Create_Should_Create_FileSystemContentsListingCmd_Instance()
         {
-           
-            var args = new Dictionary<string, string>
+
+            var expectedCmd = new StorageCmdParamSet
             {
-                {"cmdType","StorageContentsListing" },
-                {"requestId",Guid.NewGuid().ToString("N") },
-                {"uri",new Uri(AppDomain.CurrentDomain.BaseDirectory).ToString() }
+                CmdType = CmdType.StorageContentsListing,
+                RequestId = Guid.NewGuid(),
+                SentOn = DateTime.Now,
+                Path = AppDomain.CurrentDomain.BaseDirectory.ToString()
             };
 
-            var actual = CmdFactory.Create(CmdType.StorageContentsListing, args);
+            var actual = new CmdFactory().Create(CmdType.StorageContentsListing, expectedCmd);
 
             Assert.IsInstanceOf<FileSystemContentsListingCmd>(actual);
 

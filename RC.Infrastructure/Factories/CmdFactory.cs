@@ -1,5 +1,5 @@
 ﻿using RC.Implementation.Commands;
-using RC.Interfaces.Appenders;
+using RC.Implementation.Commands.Storages;
 using RC.Interfaces.Commands;
 using RC.Interfaces.Factories;
 using System;
@@ -7,26 +7,38 @@ using System.Collections.Generic;
 
 namespace RC.Infrastructure.Factories
 {
-    public class CmdFactory : ICmdFactory
+    public class CmdFactory : ICmdFactory<CmdParametersSet>
     {
-        private IDictionary<CmdType, Func<IDictionary<string, string>, ICmd>> _map = new Dictionary<CmdType, Func<IDictionary<string, string>, ICmd>>();
+        private IDictionary<CmdType, Func<CmdParametersSet, ICmd>> _map = new Dictionary<CmdType, Func<CmdParametersSet, ICmd>>();
 
         public  CmdFactory()
         {
             BuildMap();
         }
-        public ICmd Create(CmdType cmdType, IDictionary<string, string> cmdParams)
+        public ICmd Create(CmdType cmdType, CmdParametersSet parametersSet)
         {
-            return _map[cmdType](cmdParams);
+            return _map[cmdType](parametersSet);
 
 
         }
+
 
         private void BuildMap()
         {
             var resultAppender = ResultAppenderManager.Instance.ResultAppender;
 
-           // _map.Add(CmdType.StorageContentsListing, (Dictionary<string, string> cmdParams) => { return new FileSystemContentsListingCmd(new StorageFactory(), resultAppender, cmdParams); });
+            _map.Add(
+                        CmdType.StorageContentsListing, 
+                        (CmdParametersSet parametersSet) => 
+                            {
+                                return new FileSystemContentsListingCmd(StorageFactory.Instance, resultAppender, Convert<StorageCmdParamSet>(parametersSet));
+                            }
+                    );
+        }
+
+        private  T Convert<T>(object o) where T : CmdParametersSet
+        {
+            return (T)System.Convert.ChangeType(o, typeof(T));
         }
     }
 

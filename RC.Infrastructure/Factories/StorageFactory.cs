@@ -9,20 +9,38 @@ using System.Threading.Tasks;
 
 namespace RC.Infrastructure.Factories
 {
-    public class StorageFactory : IStorageFactory
+    //this singleton follows fourth version Jon Skeet's http://csharpindepth.com/Articles/General/Singleton.aspx 
+
+    public sealed class StorageFactory : IStorageFactory
     {
         private readonly IDictionary<StorageType, Func<Uri, IStorage<IStorageObject>>> _map;
+        private static StorageFactory _instance = new StorageFactory();
 
-        public StorageFactory()
+        static StorageFactory()
+        {
+
+        }
+
+        private StorageFactory()
         {
             _map = BuildMap();
         }
+        public static StorageFactory Instance
+        {
+            get
+            {
+                return _instance;
+            }
+        }
+
+
+       
         public IStorage<IStorageObject> Create(StorageType type, Uri storageUri)
         {
             return _map[type](storageUri);
         }
 
-        private IDictionary<StorageType, Func<Uri,IStorage<IStorageObject>>> BuildMap()
+        private IDictionary<StorageType, Func<Uri, IStorage<IStorageObject>>> BuildMap()
         {
             return new Dictionary<StorageType, Func<Uri, IStorage<IStorageObject>>>
             {

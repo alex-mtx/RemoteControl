@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9E177F6E-025A-4AA3-94EE-367D3B79C150}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IntegrationTests</RootNamespace>
+    <AssemblyName>IntegrationTests</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DapperCmdReceiverTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App_Data\demo.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\RC.DapperServices\RC.DapperServices.csproj">
+      <Project>{ae1a2b3c-089f-4cd4-9acc-c97338905f5d}</Project>
+      <Name>RC.DapperServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RC.DBMigrations\RC.DBMigrations.csproj">
+      <Project>{3820a9d2-37c8-4e91-b70f-3ff328583007}</Project>
+      <Name>RC.DBMigrations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RC.Implementation\RC.Implementation.csproj">
+      <Project>{3bbc8ead-de61-41d0-8ab2-8ceccd5dd10b}</Project>
+      <Name>RC.Implementation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RC.Infrastructure\RC.Infrastructure.csproj">
+      <Project>{40c3eb58-07eb-4a44-8913-1c536fb4cdeb}</Project>
+      <Name>RC.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RC.Interfaces\RC.Interfaces.csproj">
+      <Project>{f89dd292-bd82-47a8-81d1-e909bd5c9d3b}</Project>
+      <Name>RC.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RC.SQLiteServices\RC.SQLiteServices.csproj">
+      <Project>{9256f121-189d-4e66-9a7a-d4ee58984cdc}</Project>
+      <Name>RC.SQLiteServices</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

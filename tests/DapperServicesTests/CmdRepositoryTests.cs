@@ -2,7 +2,6 @@
 using RC.DBMigrations;
 using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,20 +11,25 @@ using RC.Implementation.Commands.Storages;
 using RC.Interfaces.Factories;
 using System.Reflection;
 using Dapper.Contrib.Extensions;
+using RC.SQLiteServices;
+using RC.DapperServices;
+using RC.Implementation.Commands;
 
 namespace DapperServicesTests
 {
-    [TestFixture]
-    public class TestClass
+    [TestFixture(TestOf =typeof(CmdRepository))]
+    public class CmdRepositoryTests
     {
+
         [Test]
-        public void TestMethod()
+        public void PendingCommands_When_New_Command_Is_Available_List_It()
         {
             var migrator = new DebugMigrator("Data Source=|DataDirectory|demo.db;Version=3");
             migrator.Migrate(runner => runner.MigrateDown(0));
             migrator.Migrate(runner => runner.MigrateUp());
 
-            var conn = new SQLiteConnection("Data Source=|DataDirectory|demo.db;Version=3");
+            var factory = new SQLiteConnectionFactory("Data Source=|DataDirectory|demo.db;Version=3");
+            var conn = factory.CreateDbConnection();
             
             var expectedCmd = new StorageCmdParamSet
             {
@@ -43,11 +47,14 @@ namespace DapperServicesTests
                 expectedCmd.Path,
                 expectedCmd.Finished
             });
-            var actualCmds = conn.Query<StorageCmdParamSet>("SELECT * from command_request WHERE [Finished] = 0");
+
+
+            var actualCmds = new CmdRepository(factory).PendingCommands();
+            var actualCmd = actualCmds.Single();
 
             CollectionAssert.IsNotEmpty(actualCmds);
             Assert.True(actualCmds.Select(x => x.RequestId == expectedCmd.RequestId).Count() == 1);
-
+            Assert.IsInstanceOf<StorageCmdParamSet>(actualCmd);
         }
     }
 }

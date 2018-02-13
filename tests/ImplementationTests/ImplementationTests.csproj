@@ -75,7 +75,7 @@
     <Compile Include="Commands\AbstractCmdTests.cs" />
     <Compile Include="Commands\FileSystemContentsListingCmdTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Receivers\CmdReceiverTests.cs" />
+    <Compile Include="Receivers\AbstractCmdReceiverTests.cs" />
     <Compile Include="Storages\BasicStorageSetupTests.cs" />
     <Compile Include="Storages\LocalFileSystemStorageTests.cs" />
   </ItemGroup>

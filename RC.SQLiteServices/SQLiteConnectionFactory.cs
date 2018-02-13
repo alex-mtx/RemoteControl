@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using RC.Interfaces.Factories;
+using System;
+using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.SQLite;
 
-namespace RC.Infrastructure.Factories
+namespace RC.SQLiteServices
 {
-    public class DBConnectionFactory
+    public class SQLiteConnectionFactory : IDbConnectionFactory
     {
         private readonly string _providerName;
         private readonly string _connectionString;
@@ -18,12 +16,19 @@ namespace RC.Infrastructure.Factories
         // create the DbProviderFactory and DbConnection.
         // Returns a DbConnection on success; null on failure.
 
-        public DBConnectionFactory(string providerName, string connectionString)
+        public SQLiteConnectionFactory(string providerName, string connectionString):this(connectionString)
         {
             _providerName = providerName;
+        }
+        /// <summary>
+        /// Assumes "System.Data.SQLite" as the default provider
+        /// </summary>
+        /// <param name="connectionString"></param>
+        public SQLiteConnectionFactory(string connectionString)
+        {
             _connectionString = connectionString;
         }
-        public DbConnection CreateDbConnection()
+        public IDbConnection CreateDbConnection()
         {
             // Assume failure.
             DbConnection connection = null;
@@ -33,11 +38,7 @@ namespace RC.Infrastructure.Factories
             {
                 try
                 {
-                    DbProviderFactory factory =
-                        DbProviderFactories.GetFactory(_providerName);
-
-                    connection = factory.CreateConnection();
-                    connection.ConnectionString = _connectionString;
+                    connection = new SQLiteConnection(_connectionString);
                 }
                 catch (Exception ex)
                 {

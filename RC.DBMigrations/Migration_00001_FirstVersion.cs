@@ -21,7 +21,7 @@ namespace RC.DBMigrations
                 .WithColumn("Finished").AsBoolean().WithDefault(0).NotNullable()
                       
                 //Storage specific params
-                .WithColumn("Path").AsString(1024);
+                .WithColumn("Path").AsString(1024).Nullable();
 
         }
     }

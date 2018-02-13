@@ -64,8 +64,10 @@
     <Compile Include="Commands\CmdType.cs" />
     <Compile Include="Commands\ICmd.cs" />
     <Compile Include="Factories\ICmdFactory.cs" />
+    <Compile Include="Factories\IDbConnectionFactory.cs" />
     <Compile Include="Factories\IStorageFactory.cs" />
     <Compile Include="Factories\StorageType.cs" />
+    <Compile Include="Repositories\ICmdRepository.cs" />
     <Compile Include="Storages\IStorageObject.cs" />
     <Compile Include="Factories\IFactory.cs" />
     <Compile Include="Storages\IStorage.cs" />

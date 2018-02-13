@@ -1,19 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RC.Interfaces.Factories;
+using System;
+using System.Data;
 
 namespace RC.DapperServices
 {
-    public class AbstractRepository
+    public abstract class AbstractRepository
     {
-        private DbConnection _connection;
+        protected readonly string _connectionString;
+        private readonly IDbConnectionFactory _dbConnectionFactory;
 
-        public AbstractRepository(DbConnection connection)
+        public AbstractRepository(IDbConnectionFactory dbConnectionFactory) => _dbConnectionFactory = dbConnectionFactory;
+
+        protected virtual void Execute(Action<IDbConnection, IDbTransaction> query)
         {
-            _connection = connection;
+            using (IDbConnection conn = _dbConnectionFactory.CreateDbConnection())
+            using (var tx = conn.BeginTransaction())
+            {
+                try
+                {
+                    query(conn, tx);
+                    tx.Commit();
+                }
+                catch (Exception e)
+                {
+                    if (tx != null)
+                        tx.Rollback();
+                    throw e;
+                }
+            }
+        }
+
+        protected virtual TReturn Query<TReturn>(Func<IDbConnection, TReturn> query)
+        {
+            using (IDbConnection conn = _dbConnectionFactory.CreateDbConnection())
+            {
+                return query(conn);
+            }
         }
     }
 }

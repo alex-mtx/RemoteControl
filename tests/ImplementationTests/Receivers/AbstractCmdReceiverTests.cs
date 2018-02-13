@@ -6,8 +6,8 @@ using RC.Interfaces.Receivers;
 
 namespace ImplementationTests.Receivers
 {
-    [TestFixture]
-    public class CmdReceiverTests
+    [TestFixture(TestOf = typeof(AbstractCmdReceiver))]
+    public class AbstractCmdReceiverTests
     {
         [Test]
         public void StartReceiving_When_A_Cmd_Is_Fetch_Should_Execute_Client_Delegate()
@@ -16,7 +16,7 @@ namespace ImplementationTests.Receivers
             var receiver = new DummyCmdReceiver(cmdMock.Object);
             receiver.StartReceiving((ICmd cmd) => { cmd.Run(); });
 
-            cmdMock.Verify(cmd => cmd.Run(), Times.Once);
+            cmdMock.Verify(cmd => cmd.Run(), Times.Once);   
         }
 
         private class DummyCmdReceiver : AbstractCmdReceiver

@@ -4,8 +4,8 @@ using RC.Interfaces.Factories;
 
 namespace RC.Interfaces.Factories
 {
-    public interface ICmdFactory
+    public interface ICmdFactory<in TCmdParamSet>
     {
-        ICmd Create(CmdType cmdType, IDictionary<string, string> cmdParams);
+        ICmd Create(CmdType cmdType, TCmdParamSet paramsSet);
     }
 }

@@ -12,7 +12,7 @@ namespace RC.Implementation.Commands
         public virtual CmdType CmdType { get; set; }
         public virtual bool Finished{ get; set; }
 
-
+       
 
     }
 }
