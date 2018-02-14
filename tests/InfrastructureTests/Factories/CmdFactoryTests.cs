@@ -8,7 +8,8 @@ using System.Collections.Generic;
 
 namespace InfrastructureTests.Factories
 {
-    [TestFixture(TestOf = typeof(CmdFactory))]
+    [TestFixture(Category = "Factories", TestOf = typeof(CmdFactory))]
+
     public class CmdFactoryTests
     {
         [Test]

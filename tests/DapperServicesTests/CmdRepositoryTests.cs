@@ -1,23 +1,16 @@
-﻿using NUnit.Framework;
+﻿using Dapper;
+using NUnit.Framework;
+using RC.DapperServices;
 using RC.DBMigrations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dapper;
-using Dapper.Contrib;
 using RC.Implementation.Commands.Storages;
 using RC.Interfaces.Factories;
-using System.Reflection;
-using Dapper.Contrib.Extensions;
 using RC.SQLiteServices;
-using RC.DapperServices;
-using RC.Implementation.Commands;
+using System;
+using System.Linq;
 
 namespace DapperServicesTests
 {
-    [TestFixture(TestOf =typeof(CmdRepository))]
+    [TestFixture(Category = "DapperServices", TestOf =typeof(CmdRepository))]
     public class CmdRepositoryTests
     {
 
@@ -25,8 +18,7 @@ namespace DapperServicesTests
         public void PendingCommands_When_New_Command_Is_Available_List_It()
         {
             var migrator = new DebugMigrator("Data Source=|DataDirectory|demo.db;Version=3");
-            migrator.Migrate(runner => runner.MigrateDown(0));
-            migrator.Migrate(runner => runner.MigrateUp());
+            migrator.Migrate();
 
             var factory = new SQLiteConnectionFactory("Data Source=|DataDirectory|demo.db;Version=3");
             var conn = factory.CreateDbConnection();

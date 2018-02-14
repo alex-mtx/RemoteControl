@@ -9,7 +9,7 @@ namespace RC.Implementation.Storages
         public BasicStorageSetup(Uri uri) {
 
             if (!uri.IsAbsoluteUri)
-                throw new ArgumentException("An absolute Uri is required");
+                throw new ArgumentException($"The provided path '{uri.OriginalString}' is not an absolute Uri");
             Uri = uri;
         }
     }

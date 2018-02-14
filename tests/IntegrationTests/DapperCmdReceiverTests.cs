@@ -1,54 +1,70 @@
-﻿using Moq;
+﻿using Dapper;
 using NUnit.Framework;
+using RC.DapperServices;
 using RC.DapperServices.Receivers;
-using RC.Implementation.Commands;
+using RC.DBMigrations;
 using RC.Implementation.Commands.Storages;
+using RC.Infrastructure.Factories;
 using RC.Interfaces.Commands;
 using RC.Interfaces.Factories;
-using RC.Interfaces.Repositories;
+using RC.SQLiteServices;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace IntegrationTests
 {
-    [TestFixture(TestOf =typeof(DapperCmdReceiver))]
+    [TestFixture(Category = "IntegrationTests")]
     public class DapperCmdReceiverTests
     {
-        //[Test]
-        //public void StartReceiving_When_A_New_Cmd_Is_Available_Then_Executes_Client_Delegate()
-        //{
-        //    var interval = 1;
-        //    var cmdMock = new Mock<ICmd>();
-        //    cmdMock.Setup(x => x.Run()).Verifiable();
-        //    var repoMock = new Mock<ICmdRepository<CmdParametersSet>>();
-        //    repoMock.Setup(x => x.PendingCommands()).Returns(() => GenerateCmds());
-        //    var factoryMock = new Mock<ICmdFactory<CmdParametersSet>>();
-        //    factoryMock.Setup(x => x.Create(It.IsAny<CmdType>(),It.IsAny<CmdParametersSet>())).Returns(cmdMock.Object);
+        private readonly string cs = "Data Source=|DataDirectory|demo2.db;Version=3";
+        [Test]
+        public void StartReceiving_When_A_New_Cmd_Is_Available_Then_Executes_Client_Delegate()
+        {
 
-        //    var receiver = new DapperCmdReceiver(interval, factoryMock.Object,repoMock.Object);
+            var migrator = new DebugMigrator(cs);
+            migrator.Migrate();
 
-        //    receiver.StartReceiving((ICmd cmd) => { cmd.Run(); });
-        //    Thread.Sleep(interval * 1200);
+            var factory = new SQLiteConnectionFactory(cs);
+            var conn = factory.CreateDbConnection();
 
-        //    cmdMock.Verify(cmd => cmd.Run(), Times.Once);
-        //}
+            var cmdFactory = new CmdFactory();
+            var dbConnectionFactory = new SQLiteConnectionFactory(cs);
+            var cmdRepository = new CmdRepository(dbConnectionFactory);
+            var receiver = new DapperCmdReceiver(1, cmdFactory,cmdRepository);
+            var executed = false;
 
-        //private List<CmdParametersSet> GenerateCmds()
-        //{
-        //    var cmd = new StorageCmdParamSet
-        //    {
-        //        CmdType = CmdType.StorageContentsListing,
-        //        Finished = false,
-        //        Path = new Uri(AppDomain.CurrentDomain.BaseDirectory).OriginalString,
-        //        RequestId = Guid.NewGuid(),
-        //        SentOn = DateTime.Now
-        //    };
-        //    return new List<CmdParametersSet> { cmd };
-        //}
+            InsertCmd();
 
+            Assert.DoesNotThrow(()=> receiver.StartReceiving((ICmd cmd) => { cmd.Run(); executed = true; }));
+
+            Thread.Sleep(1500);
+            Assert.True(executed);
+
+        }
+
+      
+        private void InsertCmd()
+        {
+            var factory = new SQLiteConnectionFactory(cs);
+            using (var conn = factory.CreateDbConnection())
+            {
+                var expectedCmd = new StorageCmdParamSet
+                {
+                    CmdType = CmdType.StorageContentsListing,
+                    RequestId = Guid.NewGuid(),
+                    SentOn = DateTime.Now,
+                    Path = new Uri(AppDomain.CurrentDomain.BaseDirectory).AbsolutePath
+                };
+
+                conn.Execute(@"INSERT INTO [command_request] ([RequestId], [SentOn],[CmdType], [Path],[Finished]) VALUES (@RequestId,@SentOn,@CmdType,@Path,@Finished);", new
+                {
+                    expectedCmd.RequestId,
+                    expectedCmd.SentOn,
+                    expectedCmd.CmdType,
+                    expectedCmd.Path,
+                    expectedCmd.Finished
+                });
+            }
+        }
     }
 }

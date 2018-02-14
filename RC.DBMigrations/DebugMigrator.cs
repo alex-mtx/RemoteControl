@@ -31,7 +31,7 @@ namespace RC.DBMigrations
             public int Timeout { get; set; }
         }
 
-        public void Migrate(Action<IMigrationRunner> runnerAction)
+        public void Migrate()
         {
             var options = new MigrationOptions { PreviewOnly = false, Timeout = 0 };
             var factory = new FluentMigrator.Runner.Processors.SQLite.SQLiteProcessorFactory();

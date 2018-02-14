@@ -10,5 +10,10 @@ namespace RC.RabbitMQServices
         {
             throw new NotImplementedException();
         }
+
+        public override void StopReceiving()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

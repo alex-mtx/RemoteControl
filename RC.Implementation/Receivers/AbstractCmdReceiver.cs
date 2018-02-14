@@ -6,5 +6,6 @@ namespace RC.Implementation.Receivers
     public abstract class AbstractCmdReceiver : ICmdReceiver
     {
         public abstract void StartReceiving(CmdReceivedEventHandler handler);
+        public abstract void StopReceiving();
     }
 }

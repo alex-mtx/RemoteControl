@@ -5,7 +5,8 @@ using NUnit.Framework;
 
 namespace ImplementationTests.Commands
 {
-    [TestFixture]
+    [TestFixture(Category = "Cmds", TestOf = typeof(AbstractCmd<object,object>))]
+
     public class AbstractCmdTests
     {
         [Test]

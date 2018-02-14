@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace InfrastructureTests
 {
-    [TestFixture]
+    [TestFixture(Category = "Appenders", TestOf = typeof(ResultAppenderManager))]
+
     public class ResultAppenderManagerTests
     {
         [Test]

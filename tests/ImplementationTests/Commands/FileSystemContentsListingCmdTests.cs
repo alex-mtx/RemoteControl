@@ -8,7 +8,8 @@ using RC.Implementation.Commands.Storages;
 
 namespace ImplementationTests.Commands
 {
-    [TestFixture]
+    [TestFixture(Category = "Cmds", TestOf = typeof(FileSystemContentsListingCmd))]
+
     public class FileSystemContentsListingCmdTests
     {
         [Test]

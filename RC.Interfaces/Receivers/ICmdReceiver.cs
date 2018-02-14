@@ -7,5 +7,6 @@ namespace RC.Interfaces.Receivers
     public interface ICmdReceiver
     {
         void StartReceiving(CmdReceivedEventHandler handler);
+        void StopReceiving();
     }
 }

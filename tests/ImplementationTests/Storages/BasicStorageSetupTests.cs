@@ -4,7 +4,8 @@ using System;
 
 namespace ImplementationTests.Storages
 {
-    [TestFixture]
+    [TestFixture(Category = "Storages", TestOf = typeof(BasicStorageSetup))]
+
     public class BasicStorageSetupTests
     {
         [Test]

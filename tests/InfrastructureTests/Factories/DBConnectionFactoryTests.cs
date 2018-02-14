@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace InfrastructureTests.Factories
 {
-    [TestFixture]
+    [TestFixture(Category = "Factories",TestOf = typeof(DBConnectionFactory))]
     public class DBConnectionFactoryTests
     {
         [Test]

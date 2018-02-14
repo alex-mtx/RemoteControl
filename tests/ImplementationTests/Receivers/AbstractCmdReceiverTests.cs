@@ -32,7 +32,11 @@ namespace ImplementationTests.Receivers
             {
                 handler(_cmd);
             }
-            
+
+            public override void StopReceiving()
+            {
+                throw new System.NotImplementedException();
+            }
         }
     }
 }
