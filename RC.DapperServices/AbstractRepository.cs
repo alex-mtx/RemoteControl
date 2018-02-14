@@ -11,21 +11,24 @@ namespace RC.DapperServices
 
         public AbstractRepository(IDbConnectionFactory dbConnectionFactory) => _dbConnectionFactory = dbConnectionFactory;
 
-        protected virtual void Execute(Action<IDbConnection, IDbTransaction> query)
+        protected virtual void Execute(Action<IDbConnection> query)
         {
             using (IDbConnection conn = _dbConnectionFactory.CreateDbConnection())
-            using (var tx = conn.BeginTransaction())
             {
-                try
+                conn.Open();
+                using (var tx = conn.BeginTransaction())
                 {
-                    query(conn, tx);
-                    tx.Commit();
-                }
-                catch (Exception e)
-                {
-                    if (tx != null)
-                        tx.Rollback();
-                    throw e;
+                    try
+                    {
+                        query(conn);
+                        tx.Commit();
+                    }
+                    catch (Exception e)
+                    {
+                        if (tx != null)
+                            tx.Rollback();
+                        throw e;
+                    }
                 }
             }
         }

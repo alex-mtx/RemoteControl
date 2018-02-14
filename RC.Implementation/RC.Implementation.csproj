@@ -63,6 +63,7 @@
     <Compile Include="Appenders\GeneralResultAppender.cs" />
     <Compile Include="Commands\AbstractCmd.cs" />
     <Compile Include="Commands\CmdParametersSet.cs" />
+    <Compile Include="Commands\CmdStatus.cs" />
     <Compile Include="Commands\Storages\FileSystemContentsListingCmd.cs" />
     <Compile Include="Commands\Storages\StorageCmdParamSet.cs" />
     <Compile Include="Receivers\AbstractCmdReceiver.cs" />

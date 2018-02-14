@@ -38,7 +38,7 @@ namespace DapperServicesTests
             var cmd = new StorageCmdParamSet
             {
                 CmdType = CmdType.StorageContentsListing,
-                Finished = false,
+                Status = CmdStatus.AwaitingForExecution,
                 Path = new Uri(AppDomain.CurrentDomain.BaseDirectory).OriginalString,
                 RequestId = Guid.NewGuid(),
                 SentOn = DateTime.Now

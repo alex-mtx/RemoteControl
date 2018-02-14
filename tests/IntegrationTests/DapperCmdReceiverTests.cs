@@ -3,6 +3,7 @@ using NUnit.Framework;
 using RC.DapperServices;
 using RC.DapperServices.Receivers;
 using RC.DBMigrations;
+using RC.Implementation.Commands;
 using RC.Implementation.Commands.Storages;
 using RC.Infrastructure.Factories;
 using RC.Interfaces.Commands;
@@ -53,16 +54,18 @@ namespace IntegrationTests
                     CmdType = CmdType.StorageContentsListing,
                     RequestId = Guid.NewGuid(),
                     SentOn = DateTime.Now,
-                    Path = new Uri(AppDomain.CurrentDomain.BaseDirectory).AbsolutePath
+                    Path = new Uri(AppDomain.CurrentDomain.BaseDirectory).AbsolutePath,
+                    Status = CmdStatus.AwaitingForExecution
+
                 };
 
-                conn.Execute(@"INSERT INTO [command_request] ([RequestId], [SentOn],[CmdType], [Path],[Finished]) VALUES (@RequestId,@SentOn,@CmdType,@Path,@Finished);", new
+                conn.Execute(@"INSERT INTO [CmdParametersSets] ([RequestId], [SentOn],[CmdType], [Path],[Status]) VALUES (@RequestId,@SentOn,@CmdType,@Path,@Status);", new
                 {
                     expectedCmd.RequestId,
                     expectedCmd.SentOn,
                     expectedCmd.CmdType,
                     expectedCmd.Path,
-                    expectedCmd.Finished
+                    expectedCmd.Status
                 });
             }
         }

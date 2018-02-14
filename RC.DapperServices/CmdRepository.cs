@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Dapper.Contrib.Extensions;
 using RC.Implementation.Commands;
 using RC.Implementation.Commands.Storages;
 using RC.Interfaces.Factories;
@@ -25,7 +26,7 @@ namespace RC.DapperServices
         {
             //https://github.com/StackExchange/Dapper#type-switching-per-row
             var cmdParams = new List<CmdParametersSet>();
-            using (var reader = conn.ExecuteReader("SELECT * from command_request WHERE [Finished] = 0"))
+            using (var reader = conn.ExecuteReader("SELECT * from CmdParametersSet WHERE [Status] = @Status",new {Status = CmdStatus.AwaitingForExecution}))
             {
                 var storageListingParser = reader.GetRowParser<CmdParametersSet>(typeof(StorageCmdParamSet));
 
@@ -51,5 +52,9 @@ namespace RC.DapperServices
             }
         }
 
+        public void Update(CmdParametersSet entity)
+        {
+            base.Execute((IDbConnection conn) => conn.Update<CmdParametersSet>(entity));
+        }
     }
 }

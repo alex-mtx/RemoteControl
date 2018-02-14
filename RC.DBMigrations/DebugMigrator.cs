@@ -49,7 +49,7 @@ namespace RC.DBMigrations
             using (var processor = factory.Create(connectionString, announcer, options))
             {
                 var runner = new MigrationRunner(assembly, migrationContext, processor);
-                runner.MigrateDown(0);
+                runner.MigrateDown(0,true);
                 runner.MigrateUp(true);
             }
         }

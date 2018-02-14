@@ -8,18 +8,18 @@ namespace RC.DBMigrations
     {
         public override void Down()
         {
-            Delete.Table("command_request");
+            Delete.Table("[CmdParametersSets]");
         }
 
         public override void Up()
         {
-            Create.Table("command_request")
+            Create.Table("[CmdParametersSets]")
                 .WithColumn("Id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("RequestID").AsGuid().NotNullable()
                 .WithColumn("SentOn").AsDateTime().NotNullable()
                 .WithColumn("CmdType").AsInt32().NotNullable()
-                .WithColumn("Finished").AsBoolean().WithDefault(0).NotNullable()
-                      
+                .WithColumn("Status").AsInt32().NotNullable().WithDefaultValue(1) //awaiting for execution
+
                 //Storage specific params
                 .WithColumn("Path").AsString(1024).Nullable();
 
