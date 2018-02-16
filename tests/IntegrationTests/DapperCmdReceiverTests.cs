@@ -10,6 +10,7 @@ using RC.Interfaces.Commands;
 using RC.Interfaces.Factories;
 using RC.SQLiteServices;
 using System;
+using System.Configuration;
 using System.Threading;
 
 namespace IntegrationTests
@@ -17,20 +18,22 @@ namespace IntegrationTests
     [TestFixture(Category = "IntegrationTests")]
     public class DapperCmdReceiverTests
     {
-        private readonly string cs = "Data Source=|DataDirectory|demo2.db;Version=3";
+        private static ConnectionStringSettings connectionSettings = ConfigurationManager.ConnectionStrings["default"];
+        private DBConnectionFactory _factory;
+
+        [SetUp]
+        public void SetUp()
+        {
+            var migrator = new DebugMigrator(connectionSettings.ConnectionString);
+            migrator.Migrate("SQLServer");
+            _factory = new DBConnectionFactory(connectionSettings);
+        }
         [Test]
         public void StartReceiving_When_A_New_Cmd_Is_Available_Then_Executes_Client_Delegate()
         {
 
-            var migrator = new DebugMigrator(cs);
-            migrator.Migrate();
-
-            var factory = new SQLiteConnectionFactory(cs);
-            var conn = factory.CreateDbConnection();
-
             var cmdFactory = new CmdFactory();
-            var dbConnectionFactory = new SQLiteConnectionFactory(cs);
-            var cmdRepository = new CmdRepository(dbConnectionFactory);
+            var cmdRepository = new CmdRepository(_factory);
             var receiver = new DapperCmdReceiver(1, cmdFactory,cmdRepository);
             var executed = false;
 
@@ -46,8 +49,7 @@ namespace IntegrationTests
       
         private void InsertCmd()
         {
-            var factory = new SQLiteConnectionFactory(cs);
-            using (var conn = factory.CreateDbConnection())
+            using (var conn = _factory.CreateDbConnection())
             {
                 var expectedCmd = new StorageCmdParamSet
                 {

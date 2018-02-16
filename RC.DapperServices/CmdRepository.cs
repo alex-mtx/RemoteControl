@@ -26,7 +26,7 @@ namespace RC.DapperServices
         {
             //https://github.com/StackExchange/Dapper#type-switching-per-row
             var cmdParams = new List<CmdParametersSet>();
-            using (var reader = conn.ExecuteReader("SELECT * from CmdParametersSet WHERE [Status] = @Status",new {Status = CmdStatus.AwaitingForExecution}))
+            using (var reader = conn.ExecuteReader("SELECT * from [CmdParametersSets] WHERE [Status] = @Status",new {Status = CmdStatus.AwaitingForExecution}))
             {
                 var storageListingParser = reader.GetRowParser<CmdParametersSet>(typeof(StorageCmdParamSet));
 
@@ -54,7 +54,7 @@ namespace RC.DapperServices
 
         public void Update(CmdParametersSet entity)
         {
-            base.Execute((IDbConnection conn) => conn.Update<CmdParametersSet>(entity));
+            base.Execute((IDbConnection conn,IDbTransaction tx) => conn.Update(entity,tx));
         }
     }
 }

@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace DapperServicesTests
 {
-    [TestFixture(Category = "DapperServices", TestOf =typeof(DapperCmdReceiver))]
+    [TestFixture(Category = "DapperServices", TestOf = typeof(DapperCmdReceiver))]
     public class DapperCmdReceiverTests
     {
         [Test]
@@ -24,14 +24,16 @@ namespace DapperServicesTests
             var repoMock = new Mock<ICmdRepository<CmdParametersSet>>();
             repoMock.Setup(x => x.PendingCommands()).Returns(() => GenerateCmds());
             var factoryMock = new Mock<ICmdFactory<CmdParametersSet>>();
-            factoryMock.Setup(x => x.Create(It.IsAny<CmdType>(),It.IsAny<CmdParametersSet>())).Returns(cmdMock.Object);
+            factoryMock.Setup(x => x.Create(It.IsAny<CmdType>(), It.IsAny<CmdParametersSet>())).Returns(cmdMock.Object);
 
-            var receiver = new DapperCmdReceiver(interval, factoryMock.Object,repoMock.Object);
+            var receiver = new DapperCmdReceiver(interval, factoryMock.Object, repoMock.Object);
 
             receiver.StartReceiving((ICmd cmd) => { cmd.Run(); });
             Thread.Sleep(500);
             cmdMock.Verify(cmd => cmd.Run(), Times.Once);
         }
+
+     
 
         private List<CmdParametersSet> GenerateCmds()
         {

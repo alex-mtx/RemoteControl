@@ -4,6 +4,8 @@ using RC.Interfaces.Factories;
 using RC.Interfaces.Receivers;
 using RC.Interfaces.Repositories;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,38 +30,46 @@ namespace RC.DapperServices.Receivers
         public override void StartReceiving(CmdReceivedEventHandler handler)
         {
             Receive = true;
-            try
-            {
-                Task.Run(()=> FetchNewCmdRequests(handler));
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            Task.Run(()=> FetchNewCmdRequests(handler));
         }
 
         private void FetchNewCmdRequests(CmdReceivedEventHandler handler)
         {
+            IEnumerable<CmdParametersSet> newCmds = null;
             while (Receive)
             {
                 try
                 {
-                    var newCmds =  _repository.PendingCommands();
-                    foreach (var cmdParam in newCmds)
-                    {
-                        var cmd = _cmdFactory.Create(cmdParam.CmdType, cmdParam);
-                        handler(cmd);
-                    }
+                    newCmds = _repository.PendingCommands();
+                    
                 }
                 catch (Exception e)
+                {
+                    
+                    throw;
+                }
+
+                DelegateCmds(handler, newCmds);
+                Thread.Sleep(_intervalInSeconds * 1000);
+            }
+
+        }
+
+        private void DelegateCmds(CmdReceivedEventHandler handler, IEnumerable<CmdParametersSet> newCmds)
+        {
+            foreach (var cmdParam in newCmds)
+            {
+                var cmd = _cmdFactory.Create(cmdParam.CmdType, cmdParam);
+                try
+                {
+                    handler(cmd);
+                }
+                catch (Exception)
                 {
 
                     throw;
                 }
-                Thread.Sleep(_intervalInSeconds * 1000);
             }
-
         }
 
         public override void StopReceiving()

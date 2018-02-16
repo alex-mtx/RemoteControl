@@ -1,6 +1,8 @@
-﻿using System;
+﻿using RC.Interfaces.Factories;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RC.Infrastructure.Factories
 {
-    public class DBConnectionFactory
+    public class DBConnectionFactory :IDbConnectionFactory
     {
         private readonly string _providerName;
         private readonly string _connectionString;
@@ -23,7 +25,14 @@ namespace RC.Infrastructure.Factories
             _providerName = providerName;
             _connectionString = connectionString;
         }
-        public DbConnection CreateDbConnection()
+
+        public DBConnectionFactory(ConnectionStringSettings settings)
+        {
+            _providerName = settings.ProviderName;
+            _connectionString = settings.ConnectionString;
+        }
+
+        public IDbConnection CreateDbConnection()
         {
             // Assume failure.
             DbConnection connection = null;
@@ -52,5 +61,6 @@ namespace RC.Infrastructure.Factories
             // Return the connection.
             return connection;
         }
+
     }
 }

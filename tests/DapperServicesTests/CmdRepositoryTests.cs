@@ -1,12 +1,14 @@
 ﻿using Dapper;
+using Dapper.Contrib.Extensions;
 using NUnit.Framework;
 using RC.DapperServices;
 using RC.DBMigrations;
 using RC.Implementation.Commands;
 using RC.Implementation.Commands.Storages;
+using RC.Infrastructure.Factories;
 using RC.Interfaces.Factories;
-using RC.SQLiteServices;
 using System;
+using System.Configuration;
 using System.Linq;
 
 namespace DapperServicesTests
@@ -14,19 +16,23 @@ namespace DapperServicesTests
     [TestFixture(Category = "DapperServices", TestOf =typeof(CmdRepository))]
     public class CmdRepositoryTests
     {
+        private static ConnectionStringSettings connectionSettings = ConfigurationManager.ConnectionStrings["default"];
+        private DBConnectionFactory _factory;
 
-        //private static string Cs = "Data Source=|DataDirectory|dem1.db;Version=3";
-        private static string Cs = "FullUri=file::memory:?cache=shared;";
+        [SetUp]
+        public void SetUp()
+        {
+            var migrator = new DebugMigrator(connectionSettings.ConnectionString);
+            migrator.Migrate("SQLServer");
+            _factory = new DBConnectionFactory(connectionSettings);
+        }
 
         [Test]
         public void PendingCommands_When_New_Command_Is_Available_List_It()
         {
-            var migrator = new DebugMigrator(Cs);
-            migrator.Migrate();
-
-            var factory = new SQLiteConnectionFactory(Cs);
-            var conn = factory.CreateDbConnection();
             
+            var conn = _factory.CreateDbConnection();
+
             var expectedCmd = new StorageCmdParamSet
             {
                 CmdType = CmdType.StorageContentsListing,
@@ -46,7 +52,7 @@ namespace DapperServicesTests
             });
 
 
-            var actualCmds = new CmdRepository(factory).PendingCommands();
+            var actualCmds = new CmdRepository(_factory).PendingCommands();
             var actualCmd = actualCmds.Single();
 
             CollectionAssert.IsNotEmpty(actualCmds);
@@ -55,15 +61,12 @@ namespace DapperServicesTests
         }
 
         [Test]
-        public void ChangeStatusToExecuted_Should_Change_Status_To_Executed()
+        public void Update_Should_Change_Status_To_Executed()
         {
-            var migrator = new DebugMigrator(Cs);
-            migrator.Migrate();
+           
+            var conn = _factory.CreateDbConnection();
 
-            var factory = new SQLiteConnectionFactory(Cs);
-            var conn = factory.CreateDbConnection();
-
-            var expectedCmd = new StorageCmdParamSet
+            var newCmd = new StorageCmdParamSet
             {
                 CmdType = CmdType.StorageContentsListing,
                 RequestId = Guid.NewGuid(),
@@ -73,22 +76,17 @@ namespace DapperServicesTests
 
             };
 
-            var id = conn.Execute(@"INSERT INTO [CmdParametersSets] ([RequestId], [SentOn],[CmdType], [Path],[Status]) VALUES (@RequestId,@SentOn,@CmdType,@Path,@Status);", new
-            {
-                expectedCmd.RequestId,
-                expectedCmd.SentOn,
-                expectedCmd.CmdType,
-                expectedCmd.Path,
-                expectedCmd.Status
-            });
+          
+            conn.Insert<CmdParametersSet>(newCmd);
+            var persistedCmd = conn.Get<CmdParametersSet>(1);
 
+            persistedCmd.Status = CmdStatus.Executed;
 
-            expectedCmd.Id = id;
-            expectedCmd.Status = CmdStatus.Executed;
+            new CmdRepository(_factory).Update(persistedCmd);
 
-            new CmdRepository(factory).Update(expectedCmd);
-            
-            
+            persistedCmd = conn.Get<CmdParametersSet>(1);
+
+            Assert.AreEqual(persistedCmd.Status, CmdStatus.Executed);
 
         }
     }

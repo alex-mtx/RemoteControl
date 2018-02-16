@@ -2,6 +2,9 @@
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.Announcers;
 using FluentMigrator.Runner.Initialization;
+using FluentMigrator.Runner.Processors;
+using FluentMigrator.Runner.Processors.SQLite;
+using FluentMigrator.Runner.Processors.SqlServer;
 using System;
 using System.Reflection;
 
@@ -30,11 +33,25 @@ namespace RC.DBMigrations
 
             public int Timeout { get; set; }
         }
-
-        public void Migrate()
+        /// <summary>
+        /// Valid factory names:
+        /// <para>SQLite</para>
+        /// <para>SQLServer</para>
+        /// </summary>
+        /// <param name="processorFactory"></param>
+        public void Migrate(string processorFactory = "SQLite")
         {
             var options = new MigrationOptions { PreviewOnly = false, Timeout = 0 };
-            var factory = new FluentMigrator.Runner.Processors.SQLite.SQLiteProcessorFactory();
+
+            IMigrationProcessorFactory factory;
+
+            if (processorFactory.Equals("SQLite", StringComparison.OrdinalIgnoreCase))
+                factory = new SQLiteProcessorFactory();
+            else if (processorFactory.Equals("SQLServer", StringComparison.OrdinalIgnoreCase))
+                factory = new SqlServerProcessorFactory();
+            else
+                throw new ArgumentException("Expected SQLIte or SQLServer");
+
             var assembly = Assembly.GetExecutingAssembly();
 
             var announcer = new TextWriterAnnouncer(s => System.Diagnostics.Debug.WriteLine(s));

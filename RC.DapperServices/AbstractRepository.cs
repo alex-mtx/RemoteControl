@@ -33,6 +33,28 @@ namespace RC.DapperServices
             }
         }
 
+        protected virtual void Execute(Action<IDbConnection,IDbTransaction> query)
+        {
+            using (IDbConnection conn = _dbConnectionFactory.CreateDbConnection())
+            {
+                conn.Open();
+                using (var tx = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        query(conn,tx);
+                        tx.Commit();
+                    }
+                    catch (Exception e)
+                    {
+                        if (tx != null)
+                            tx.Rollback();
+                        throw e;
+                    }
+                }
+            }
+        }
+
         protected virtual TReturn Query<TReturn>(Func<IDbConnection, TReturn> query)
         {
             using (IDbConnection conn = _dbConnectionFactory.CreateDbConnection())

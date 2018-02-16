@@ -3,8 +3,9 @@ using System.Data;
 
 namespace RC.Interfaces.Repositories
 {
-    public interface ICmdRepository<out T>
+    public interface ICmdRepository<T>
     {
         IEnumerable<T> PendingCommands();
+        void Update(T entity);
     }
 }

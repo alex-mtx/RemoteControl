@@ -115,6 +115,10 @@
       <Project>{3BBC8EAD-DE61-41D0-8AB2-8CECCD5DD10B}</Project>
       <Name>RC.Implementation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\RC.Infrastructure\RC.Infrastructure.csproj">
+      <Project>{40C3EB58-07EB-4A44-8913-1C536FB4CDEB}</Project>
+      <Name>RC.Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\RC.Interfaces\RC.Interfaces.csproj">
       <Project>{F89DD292-BD82-47A8-81D1-E909BD5C9D3B}</Project>
       <Name>RC.Interfaces</Name>
