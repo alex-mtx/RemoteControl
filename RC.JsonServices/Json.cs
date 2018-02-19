@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.IO;
 
 namespace RC.JsonServices
 {
@@ -12,6 +13,12 @@ namespace RC.JsonServices
         public static string Serialize(object body)
         {
             return JsonConvert.SerializeObject(body);
+        }
+
+        public static T DeserializeFromFile<T>(string filePath)
+        {
+            var body = File.ReadAllText(filePath);
+            return Deserialize<T>(body);
         }
     }
 }

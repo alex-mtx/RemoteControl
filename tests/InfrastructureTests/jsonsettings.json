@@ -1,0 +1,14 @@
+﻿[
+    {
+      "name": "Uk",
+      "path": "C:\\dev\\git\\RemoteControl\\tests\\DapperServicesTests\\bin\\Debug"
+    },
+    {
+      "name": "ES",
+      "path": "C:\\dev\\git\\RemoteControl\\tests\\ImplementationTests\\bin\\Debug"
+    },
+    {
+      "name": "FTP",
+      "path": "C:\\dev\\git\\RemoteControl\\tests\\InfrastructureTests\\bin\\Debug"
+    }
+  ]

@@ -31,5 +31,16 @@ namespace InfrastructureTests.Setup
             Assert.Throws<ArgumentException>(() => settings.GetSetup(uriNotPresentOnSettings));
            
         }
+        [Test]
+
+        public void When_An_Instance_is_created_Then_Sets_Default_Strategy()
+        {
+            var uriNotPresentOnSettings = new Uri(AppContext.BaseDirectory);
+
+            var settings = new StorageSettings();
+
+            var setup = settings.GetSetup(uriNotPresentOnSettings);
+
+        }
     }
 }

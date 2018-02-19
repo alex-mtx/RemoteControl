@@ -16,12 +16,17 @@ namespace RC.Implementation.Storages
         public string Name { get; set; }
         public bool Active { get; set; }
 
-        public BasicStorageSetup(Uri uri,string name, bool active, string description = null)
+        public BasicStorageSetup(Uri uri, string name, bool active, string description = null)
         {
             Uri = ValidatedUri(uri);
             Name = name;
             Active = active;
             Description = description;
+        }
+
+        public BasicStorageSetup(string path, string name, bool active, string description = null) : this (new Uri(path),name,active,description)
+        {
+
         }
 
         private Uri ValidatedUri(Uri uri)

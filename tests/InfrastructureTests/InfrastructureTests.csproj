@@ -78,6 +78,7 @@
     <Compile Include="Factories\DBConnectionFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultAppenderManagerTests.cs" />
+    <Compile Include="Setup\JsonStorageSettingsStrategyTests.cs" />
     <Compile Include="Setup\StorageSettingsTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -97,10 +98,17 @@
       <Project>{f89dd292-bd82-47a8-81d1-e909bd5c9d3b}</Project>
       <Name>RC.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\RC.JsonServices\RC.JsonServices.csproj">
+      <Project>{E6EE7E84-52D3-4199-8D24-831667AF56A2}</Project>
+      <Name>RC.JsonServices</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="jsonsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

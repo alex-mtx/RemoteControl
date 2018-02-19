@@ -57,9 +57,16 @@
   <ItemGroup>
     <Compile Include="Json.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Setup\JsonStorageSettingsStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RC.Interfaces\RC.Interfaces.csproj">
+      <Project>{F89DD292-BD82-47A8-81D1-E909BD5C9D3B}</Project>
+      <Name>RC.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

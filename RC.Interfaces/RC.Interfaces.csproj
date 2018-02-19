@@ -66,6 +66,7 @@
     <Compile Include="Factories\IDbConnectionFactory.cs" />
     <Compile Include="Factories\IStorageFactory.cs" />
     <Compile Include="Infrastructure\IStorageSettings.cs" />
+    <Compile Include="Infrastructure\IStorageSettingsStrategy.cs" />
     <Compile Include="Repositories\ICmdRepository.cs" />
     <Compile Include="Storages\IStorageObject.cs" />
     <Compile Include="Factories\IFactory.cs" />
