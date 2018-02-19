@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System;
 using RC.Interfaces.Factories;
 using RC.Implementation.Commands.Storages;
+using RC.Domain.Storages;
 
 namespace ImplementationTests.Commands
 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using RC.Domain.Storages;
 using RC.Interfaces.Storages;
 
 namespace RC.Interfaces.Factories

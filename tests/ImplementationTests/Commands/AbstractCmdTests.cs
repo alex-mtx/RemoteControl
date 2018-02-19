@@ -2,10 +2,11 @@
 using RC.Interfaces.Appenders;
 using Moq;
 using NUnit.Framework;
+using RC.Domain.Commands;
 
 namespace ImplementationTests.Commands
 {
-    [TestFixture(Category = "Cmds", TestOf = typeof(AbstractCmd<object,object>))]
+    [TestFixture(Category = "Cmds", TestOf = typeof(AbstractCmd<object>))]
 
     public class AbstractCmdTests
     {
@@ -19,7 +20,7 @@ namespace ImplementationTests.Commands
             appenderMock.Verify(x => x.Append("ran"), Times.Once);
         }
 
-        private class DummyCmd : AbstractCmd<CmdParametersSet, string>
+        private class DummyCmd : AbstractCmd<string>
         {
             public DummyCmd(IResultAppender resultAppender) : base(resultAppender,new CmdParametersSet())
             {

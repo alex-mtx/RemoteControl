@@ -4,6 +4,9 @@ namespace RC.Interfaces.Storages
 {
     public interface IStorageSetup
     {
-        Uri Uri { get; }
+        bool Active { get; set; }
+        string Description { get; set; }
+        string Name { get; set; }
+        Uri Uri { get; set; }
     }
 }

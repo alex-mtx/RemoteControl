@@ -1,7 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
 using RC.DapperServices.Receivers;
-using RC.Implementation.Commands;
+using RC.Domain.Commands;
 using RC.Implementation.Commands.Storages;
 using RC.Interfaces.Commands;
 using RC.Interfaces.Factories;

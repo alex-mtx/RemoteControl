@@ -111,6 +111,10 @@
       <Project>{3820a9d2-37c8-4e91-b70f-3ff328583007}</Project>
       <Name>RC.DBMigrations</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\RC.Domain\RC.Domain.csproj">
+      <Project>{05EE8DA6-9F2D-4AD5-98D1-799ED470043F}</Project>
+      <Name>RC.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\RC.Implementation\RC.Implementation.csproj">
       <Project>{3BBC8EAD-DE61-41D0-8AB2-8CECCD5DD10B}</Project>
       <Name>RC.Implementation</Name>

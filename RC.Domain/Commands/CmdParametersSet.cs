@@ -1,8 +1,7 @@
-﻿using RC.Interfaces.Commands;
-using RC.Interfaces.Factories;
+﻿
 using System;
 
-namespace RC.Implementation.Commands
+namespace RC.Domain.Commands
 {
     public class CmdParametersSet
     {

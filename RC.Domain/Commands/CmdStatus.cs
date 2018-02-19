@@ -1,4 +1,4 @@
-﻿namespace RC.Implementation.Commands
+﻿namespace RC.Domain.Commands
 {
     public enum CmdStatus
     {

@@ -1,14 +1,15 @@
-﻿using RC.Interfaces.Appenders;
+﻿using RC.Domain.Commands;
+using RC.Interfaces.Appenders;
 using RC.Interfaces.Commands;
 
 namespace RC.Implementation.Commands
 {
-    public abstract class AbstractCmd<TParamSet, TResult> where TParamSet : CmdParametersSet,ICmd
+    public abstract class AbstractCmd<TResult> : ICmd
     {
         protected readonly IResultAppender _resultAppender;
-        TParamSet _paramSet;
+        private CmdParametersSet _paramSet;
 
-        public AbstractCmd(IResultAppender resultAppender, TParamSet args)
+        public AbstractCmd(IResultAppender resultAppender, CmdParametersSet args)
         {
             _resultAppender = resultAppender;
             _paramSet = args;
@@ -24,7 +25,6 @@ namespace RC.Implementation.Commands
             {
                 result = RunCommand();
                 _paramSet.Status = CmdStatus.Executed;
-
             }
             catch (System.Exception)
             {

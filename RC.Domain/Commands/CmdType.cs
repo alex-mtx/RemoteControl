@@ -1,4 +1,4 @@
-﻿namespace RC.Interfaces.Factories
+﻿namespace RC.Domain.Commands
 {
     public enum CmdType
     {

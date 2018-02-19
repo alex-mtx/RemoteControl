@@ -1,5 +1,4 @@
-﻿using RC.Interfaces.Storages;
-using System.Collections.Generic;
+﻿using RC.Domain.Commands;
 
 namespace RC.Interfaces.Commands
 {

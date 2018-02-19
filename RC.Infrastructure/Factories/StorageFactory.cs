@@ -1,15 +1,13 @@
-﻿using RC.Implementation.Storages;
+﻿using RC.Domain.Storages;
+using RC.Implementation.Storages;
 using RC.Interfaces.Factories;
 using RC.Interfaces.Storages;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RC.Infrastructure.Factories
 {
-    //this singleton follows fourth version Jon Skeet's http://csharpindepth.com/Articles/General/Singleton.aspx 
+    //this singleton follows fourth Jon Skeet's version http://csharpindepth.com/Articles/General/Singleton.aspx 
 
     public sealed class StorageFactory : IStorageFactory
     {
@@ -44,7 +42,7 @@ namespace RC.Infrastructure.Factories
         {
             return new Dictionary<StorageType, Func<Uri, IStorage<IStorageObject>>>
             {
-                {StorageType.FileSystem, (Uri uri) => new LocalFileSystemStorage(new BasicStorageSetup(uri)) }
+                {StorageType.FileSystem, (Uri uri) => new LocalFileSystemStorage(new BasicStorageSetup(uri,"fake repo",true)) }
             };
         }
     }

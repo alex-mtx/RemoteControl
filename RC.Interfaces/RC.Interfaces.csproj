@@ -61,12 +61,11 @@
   <ItemGroup>
     <Compile Include="Appenders\IOutput.cs" />
     <Compile Include="Appenders\IResultAppender.cs" />
-    <Compile Include="Commands\CmdType.cs" />
     <Compile Include="Commands\ICmd.cs" />
     <Compile Include="Factories\ICmdFactory.cs" />
     <Compile Include="Factories\IDbConnectionFactory.cs" />
     <Compile Include="Factories\IStorageFactory.cs" />
-    <Compile Include="Factories\StorageType.cs" />
+    <Compile Include="Infrastructure\IStorageSettings.cs" />
     <Compile Include="Repositories\ICmdRepository.cs" />
     <Compile Include="Storages\IStorageObject.cs" />
     <Compile Include="Factories\IFactory.cs" />
@@ -76,5 +75,12 @@
     <Compile Include="Storages\IStorageSetup.cs" />
     <Compile Include="Storages\StorageObjectAttribute.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RC.Domain\RC.Domain.csproj">
+      <Project>{05EE8DA6-9F2D-4AD5-98D1-799ED470043F}</Project>
+      <Name>RC.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

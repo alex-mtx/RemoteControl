@@ -3,6 +3,7 @@ using Dapper.Contrib.Extensions;
 using NUnit.Framework;
 using RC.DapperServices;
 using RC.DBMigrations;
+using RC.Domain.Commands;
 using RC.Implementation.Commands;
 using RC.Implementation.Commands.Storages;
 using RC.Infrastructure.Factories;

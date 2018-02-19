@@ -1,11 +1,10 @@
 ﻿using Dapper;
 using Dapper.Contrib.Extensions;
-using RC.Implementation.Commands;
+using RC.Domain.Commands;
 using RC.Implementation.Commands.Storages;
 using RC.Interfaces.Factories;
 using RC.Interfaces.Repositories;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 

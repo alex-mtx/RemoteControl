@@ -1,10 +1,10 @@
 ﻿using NUnit.Framework;
-using RC.Implementation.Commands;
+using RC.Domain.Commands;
 using RC.Implementation.Commands.Storages;
 using RC.Infrastructure.Factories;
+using RC.Interfaces.Appenders;
 using RC.Interfaces.Factories;
 using System;
-using System.Collections.Generic;
 
 namespace InfrastructureTests.Factories
 {
@@ -15,7 +15,8 @@ namespace InfrastructureTests.Factories
         [Test]
         public void Create_Should_Create_FileSystemContentsListingCmd_Instance()
         {
-
+            var resultAppenderMock = new Moq.Mock<IResultAppender>();
+            var storageFactoryMock = new Moq.Mock<IStorageFactory>();
             var expectedCmd = new StorageCmdParamSet
             {
                 CmdType = CmdType.StorageContentsListing,
@@ -24,7 +25,7 @@ namespace InfrastructureTests.Factories
                 Path = AppDomain.CurrentDomain.BaseDirectory.ToString()
             };
 
-            var actual = new CmdFactory().Create(CmdType.StorageContentsListing, expectedCmd);
+            var actual = new CmdFactory(resultAppenderMock.Object, storageFactoryMock.Object).Create(CmdType.StorageContentsListing, expectedCmd);
 
             Assert.IsInstanceOf<FileSystemContentsListingCmd>(actual);
 

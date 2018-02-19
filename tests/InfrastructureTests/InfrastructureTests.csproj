@@ -78,8 +78,13 @@
     <Compile Include="Factories\DBConnectionFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultAppenderManagerTests.cs" />
+    <Compile Include="Setup\StorageSettingsTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\RC.Domain\RC.Domain.csproj">
+      <Project>{05EE8DA6-9F2D-4AD5-98D1-799ED470043F}</Project>
+      <Name>RC.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\RC.Implementation\RC.Implementation.csproj">
       <Project>{3bbc8ead-de61-41d0-8ab2-8ceccd5dd10b}</Project>
       <Name>RC.Implementation</Name>

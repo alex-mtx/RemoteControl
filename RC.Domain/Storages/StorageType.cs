@@ -1,4 +1,4 @@
-﻿namespace RC.Interfaces.Factories
+﻿namespace RC.Domain.Storages
 {
     public enum StorageType
     {
@@ -6,6 +6,5 @@
         Http,
         Ftp,
         Ssh
-
     }
 }

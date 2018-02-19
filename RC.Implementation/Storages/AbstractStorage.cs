@@ -1,9 +1,5 @@
 ﻿using RC.Interfaces.Storages;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RC.Implementation.Storages
 {
@@ -17,5 +13,9 @@ namespace RC.Implementation.Storages
         }
         public abstract IEnumerable<T> Contents();
 
+        public IStorageSetup Info()
+        {
+            return _setup;
+        }
     }
 }
