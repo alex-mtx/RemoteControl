@@ -1,7 +1,7 @@
 ﻿using System;
 using RC.Interfaces.Storages;
 
-namespace RC.Interfaces.Setup
+namespace RC.Interfaces.Infrastructure
 {
     public interface IStorageSettingsStrategy
     {

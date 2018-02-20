@@ -13,7 +13,7 @@ namespace ImplementationTests.Storages
         public void Lists_Its_Contents()
         {
             var storageUri = new Uri(AppDomain.CurrentDomain.BaseDirectory);
-            var setup = new BasicStorageSetup(storageUri, "a name", true);
+            var setup = new BasicStorageSetup(storageUri.AbsolutePath, "a name", true);
             var simpleStorage = new LocalFileSystemStorage(setup);
             var expected = Directory.EnumerateFileSystemEntries(storageUri.OriginalString, "*", SearchOption.AllDirectories);
 

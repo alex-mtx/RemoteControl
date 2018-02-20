@@ -10,15 +10,15 @@ namespace RC.JsonServices
             return JsonConvert.DeserializeObject<T>(body);
         }
 
-        public static string Serialize(object body)
-        {
-            return JsonConvert.SerializeObject(body);
-        }
-
         public static T DeserializeFromFile<T>(string filePath)
         {
             var body = File.ReadAllText(filePath);
             return Deserialize<T>(body);
+        }
+
+        public static string Serialize(object body)
+        {
+            return JsonConvert.SerializeObject(body);
         }
     }
 }

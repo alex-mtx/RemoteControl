@@ -42,7 +42,7 @@ namespace RC.Infrastructure.Factories
         {
             return new Dictionary<StorageType, Func<Uri, IStorage<IStorageObject>>>
             {
-                {StorageType.FileSystem, (Uri uri) => new LocalFileSystemStorage(new BasicStorageSetup(uri,"fake repo",true)) }
+                {StorageType.FileSystem, (Uri uri) => new LocalFileSystemStorage(new BasicStorageSetup(uri.AbsolutePath,"fake repo",true)) }
             };
         }
     }

@@ -1,9 +1,6 @@
-﻿using RC.Implementation.Storages;
-using RC.Interfaces.Infrastructure;
+﻿using RC.Interfaces.Infrastructure;
 using RC.Interfaces.Storages;
 using System;
-using RC.JsonServices.Setup;
-using RC.Interfaces.Setup;
 
 namespace RC.Infrastructure.Setup
 {

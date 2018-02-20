@@ -12,14 +12,14 @@ namespace ImplementationTests.Storages
         public void When_Uri_Is_Absolute_It_Is_Accepted()
         {
             var absoluteUri = new Uri("C:\\");
-            Assert.DoesNotThrow(() => new BasicStorageSetup(absoluteUri,"a name",true));
+            Assert.DoesNotThrow(() => new BasicStorageSetup(absoluteUri.AbsolutePath,"a name",true));
         }
 
         [Test]
         public void When_Uri_Is_Relative_It_Is_Not_Accepted()
         {
             var relative = new Uri("\\var", UriKind.Relative);
-            Assert.Throws<ArgumentException>(() => new BasicStorageSetup(relative,"a name", true));
+            Assert.Throws<ArgumentException>(() => new BasicStorageSetup(relative.OriginalString,"a name", true));
         }
     }
 }

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Configuration;
 using RC.Implementation.Storages;
-using RC.Interfaces.Setup;
+using RC.Interfaces.Infrastructure;
 using RC.Interfaces.Storages;
 using System.Linq;
 using System.IO;
+using RC.JsonServices;
 
 namespace RC.Infrastructure.Setup
 {

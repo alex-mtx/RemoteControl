@@ -5,18 +5,17 @@ namespace RC.Implementation.Storages
 {
     public class BasicStorageSetup : IStorageSetup
     {
-        private Uri _uri;
         private string _description;
 
-        public Uri Uri { get => _uri; set => _uri = ValidatedUri(value); }
+        public Uri Uri { get; }
 
         public string Description { get => DefaultIfEmptyDescription(); set => _description = value; }
 
-      
         public string Name { get; set; }
+
         public bool Active { get; set; }
 
-        public BasicStorageSetup(Uri uri, string name, bool active, string description = null)
+        public BasicStorageSetup(string uri, string name, bool active, string description = null)
         {
             Uri = ValidatedUri(uri);
             Name = name;
@@ -24,15 +23,21 @@ namespace RC.Implementation.Storages
             Description = description;
         }
 
-        public BasicStorageSetup(string path, string name, bool active, string description = null) : this (new Uri(path),name,active,description)
-        {
+       
 
-        }
-
-        private Uri ValidatedUri(Uri uri)
+        private Uri ValidatedUri(string path)
         {
-            if (!uri.IsAbsoluteUri)
-                throw new ArgumentException($"The provided path '{uri.OriginalString}' is not an absolute Uri");
+            Uri uri;
+            try
+            {
+                uri = new Uri(path, UriKind.Absolute);
+                if(!uri.IsAbsoluteUri)
+                    throw new ArgumentException($"The provided path '{path}' is not an absolute Uri");
+            }
+            catch (UriFormatException ex)
+            {
+                throw new ArgumentException($"The provided path '{path}' is not an absolute Uri");
+            }
             return uri;
         }
 
