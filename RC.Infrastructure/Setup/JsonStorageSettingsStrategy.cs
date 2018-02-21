@@ -12,35 +12,27 @@ namespace RC.Infrastructure.Setup
 {
     public class JsonStorageSettingsStrategy : IStorageSettingsStrategy
     {
-        private static string _jsonFile;
+        private static string _jsonFileName;
         private static List<BasicStorageSetup> _setups;
-        private static JsonStorageSettingsStrategy _instance = new JsonStorageSettingsStrategy();
 
-        private JsonStorageSettingsStrategy()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="jsonFileName">Can be relative or absolute path. if relative it takes the currentDirectory of app</param>
+        public JsonStorageSettingsStrategy(string jsonFileName)
         {
-
-        }
-        static JsonStorageSettingsStrategy()
-        {
-            var path = ConfigurationManager.AppSettings["ConfigurationJsonStorageSettingsStrategy"];
-            FullPath(path);
+            _jsonFileName = jsonFileName;
             DeserializeAllSetups();
         }
-
-        public static JsonStorageSettingsStrategy Instance { get { return _instance; } }
+        
         public IStorageSetup GetSetup(Uri uri)
         {
-           return _setups.Where(x => x.Uri == uri && x.Active).Single();
+           return _setups.Where(x => x.Uri == uri).Single();
         }
 
         private static void DeserializeAllSetups()
         {
-            _setups = JsonServices.Json.DeserializeFromFile<List<BasicStorageSetup>>(_jsonFile);
-        }
-
-        private static void FullPath(string fileName)
-        {
-            _jsonFile = new Uri(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName)).LocalPath;
+            _setups = JsonServices.Json.DeserializeFromFile<List<BasicStorageSetup>>(_jsonFileName);
         }
     }
 }

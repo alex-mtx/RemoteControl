@@ -6,9 +6,10 @@ namespace RC.Infrastructure.Setup
 {
     public class StorageSettings : IStorageSettings
     {
-        public StorageSettings()
+
+        public StorageSettings(IStorageSettingsStrategy strategy )
         {
-            Strategy = JsonStorageSettingsStrategy.Instance;
+            Strategy = strategy;
         }
         public IStorageSettingsStrategy Strategy { get; set; }
         public IStorageSetup GetSetup(Uri uri)

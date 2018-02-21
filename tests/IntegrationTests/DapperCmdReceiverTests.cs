@@ -7,6 +7,7 @@ using RC.Domain.Commands;
 using RC.Implementation.Commands.Storages;
 using RC.Infrastructure;
 using RC.Infrastructure.Factories;
+using RC.Infrastructure.Setup;
 using RC.Interfaces.Commands;
 using System;
 using System.Configuration;
@@ -30,8 +31,10 @@ namespace IntegrationTests
         [Test]
         public void StartReceiving_When_A_New_Cmd_Is_Available_Then_Executes_Client_Delegate()
         {
-
-            var cmdFactory = new CmdFactory(ResultAppenderManager.Instance.ResultAppender,StorageFactory.Instance);
+            //Arrange
+            var storageSettings = new StorageSettings(new JsonStorageSettingsStrategy("file"));
+            var storageFactory = new StorageFactory(storageSettings);
+            var cmdFactory = new CmdFactory(ResultAppenderManager.Instance.ResultAppender, storageFactory);
             var cmdRepository = new CmdRepository(_factory);
             var receiver = new DapperCmdReceiver(1, cmdFactory,cmdRepository);
             var executed = false;

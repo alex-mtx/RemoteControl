@@ -13,7 +13,7 @@ namespace InfrastructureTests
     [SetUpFixture]
     public class Config
     {
-        [OneTimeSetUpAttribute]
+        [OneTimeSetUp]
         public void Setup()
         {
             var fullPath = Path.Combine(AppContext.BaseDirectory, "jsonsettings.json");

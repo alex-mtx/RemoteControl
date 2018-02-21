@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using RC.Implementation.Storages;
 using RC.JsonServices;
+using RC.Interfaces.Infrastructure;
+using Moq;
+using RC.Interfaces.Storages;
 
 namespace InfrastructureTests.Setup
 {
@@ -37,37 +40,35 @@ namespace InfrastructureTests.Setup
         [Test]
         public void When_A_Uri_Is_Absolute_And_Relates_To_An_Existing_StorageSetup_Then_Should_Return_An_Instance()
         {
+            //Arrange
             var expectedUri = new Uri(AppContext.BaseDirectory);
-            var actualSetup = new StorageSettings().GetSetup(expectedUri);
-            var actualUri = actualSetup.Uri;
-            Assert.AreEqual(expectedUri, actualUri);
+            var strategyMock = new Mock<IStorageSettingsStrategy>();
+            var storageSetupMock = new Mock<IStorageSetup>();
+            storageSetupMock.Setup(x => x.Uri).Returns(expectedUri);
+            strategyMock.Setup(x => x.GetSetup(It.IsAny<Uri>())).Returns(storageSetupMock.Object);
+            var storageSettings = new StorageSettings(strategyMock.Object);
+            
+            //Act
+            var actualSetup = storageSettings.GetSetup(expectedUri);
+       
+            //Arrange
+            Assert.AreEqual(expectedUri, actualSetup.Uri);
         }
         [Test]
-        [Ignore("The StorageSettings is yet not fully implemented.")]
+        //[Ignore("The StorageSettings is yet not fully implemented.")]
 
         public void When_A_Uri_Is_Absolute_And_Relates_To_An_Non_Existing_StorageSetup_Then_Should_Throw_Exception()
         {
             var uriNotPresentOnSettings = new Uri(AppContext.BaseDirectory);
 
-            var settings = new StorageSettings();
+            var strategyMock = new Mock<IStorageSettingsStrategy>();
+            strategyMock.Setup(x => x.GetSetup(It.IsAny<Uri>())).Throws<ArgumentException>();
+
+
+            var settings = new StorageSettings(strategyMock.Object);
 
             Assert.Throws<ArgumentException>(() => settings.GetSetup(uriNotPresentOnSettings));
            
-        }
-        [Test]
-        public void When_An_Instance_is_created_Then_Sets_Default_Strategy()
-        {
-            //Arrange
-            var uriNotPresentOnSettings = new Uri(AppContext.BaseDirectory);
-            var settings = new StorageSettings();
-
-            //Act
-            var setup = settings.GetSetup(uriNotPresentOnSettings);
-
-            //Assert
-            Assert.IsNotNull(setup);
-            Assert.AreEqual(uriNotPresentOnSettings,setup.Uri);
-
         }
     }
 }

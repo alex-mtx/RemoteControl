@@ -1,6 +1,7 @@
 ﻿using RC.Domain.Storages;
 using RC.Implementation.Storages;
 using RC.Interfaces.Factories;
+using RC.Interfaces.Infrastructure;
 using RC.Interfaces.Storages;
 using System;
 using System.Collections.Generic;
@@ -12,27 +13,14 @@ namespace RC.Infrastructure.Factories
     public sealed class StorageFactory : IStorageFactory
     {
         private readonly IDictionary<StorageType, Func<Uri, IStorage<IStorageObject>>> _map;
-        private static StorageFactory _instance = new StorageFactory();
+        private readonly IStorageSettings _storageSettings;
 
-        static StorageFactory()
+        public StorageFactory(IStorageSettings storageSettings)
         {
-
-        }
-
-        private StorageFactory()
-        {
+            _storageSettings = storageSettings;
             _map = BuildMap();
         }
-        public static StorageFactory Instance
-        {
-            get
-            {
-                return _instance;
-            }
-        }
-
-
-       
+        
         public IStorage<IStorageObject> Create(StorageType type, Uri storageUri)
         {
             return _map[type](storageUri);
@@ -42,7 +30,7 @@ namespace RC.Infrastructure.Factories
         {
             return new Dictionary<StorageType, Func<Uri, IStorage<IStorageObject>>>
             {
-                {StorageType.FileSystem, (Uri uri) => new LocalFileSystemStorage(new BasicStorageSetup(uri.AbsolutePath,"fake repo",true)) }
+                {StorageType.FileSystem, (Uri uri) => new LocalFileSystemStorage(_storageSettings.GetSetup(uri)) }
             };
         }
     }

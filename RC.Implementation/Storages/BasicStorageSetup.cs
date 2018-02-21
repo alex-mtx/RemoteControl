@@ -31,12 +31,11 @@ namespace RC.Implementation.Storages
             try
             {
                 uri = new Uri(path, UriKind.Absolute);
-                if(!uri.IsAbsoluteUri)
-                    throw new ArgumentException($"The provided path '{path}' is not an absolute Uri");
+
             }
             catch (UriFormatException ex)
             {
-                throw new ArgumentException($"The provided path '{path}' is not an absolute Uri");
+                throw new ArgumentException($"The provided path '{path}' is not an absolute Uri",nameof(path));
             }
             return uri;
         }
