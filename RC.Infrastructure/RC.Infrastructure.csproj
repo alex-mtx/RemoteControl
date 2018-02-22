@@ -70,6 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultAppenderManager.cs" />
     <Compile Include="Setup\AppenderOutputSetup.cs" />
+    <Compile Include="Setup\GenericStorageSettingsStrategy.cs" />
     <Compile Include="Setup\JsonStorageSettingsStrategy.cs" />
     <Compile Include="Setup\StorageSettings.cs" />
   </ItemGroup>

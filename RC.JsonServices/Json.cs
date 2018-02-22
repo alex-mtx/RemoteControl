@@ -28,18 +28,22 @@ namespace RC.JsonServices
         public static T DeserializeFromFile<T>(string filePath)
         {
             var fullPath = GetAbsoluteUri(filePath);
-            var body = File.ReadAllText(filePath);
+            var body = File.ReadAllText(fullPath);
             return Deserialize<T>(body);
         }
 
         private static string GetAbsoluteUri(string filePath)
         {
-            var uri = new Uri(filePath);
-            string fullPath = filePath;
-
-            return uri.IsAbsoluteUri ?
-                        filePath :
-                        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filePath);
+            try
+            {
+                var uri = new Uri(filePath); //Throw UriFormatException when path it's relative
+                return filePath;
+            }
+            catch (UriFormatException ex) 
+            {
+                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filePath);
+            }
+         
         }
 
         public static string Serialize(object body)

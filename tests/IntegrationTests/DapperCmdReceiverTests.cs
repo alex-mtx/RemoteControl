@@ -29,6 +29,7 @@ namespace IntegrationTests
             _factory = new DBConnectionFactory(connectionSettings);
         }
         [Test]
+        [Ignore("Not Full Testes")]
         public void StartReceiving_When_A_New_Cmd_Is_Available_Then_Executes_Client_Delegate()
         {
             //Arrange

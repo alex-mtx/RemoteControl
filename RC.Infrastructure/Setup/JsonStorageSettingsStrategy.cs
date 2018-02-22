@@ -10,10 +10,9 @@ using RC.JsonServices;
 
 namespace RC.Infrastructure.Setup
 {
-    public class JsonStorageSettingsStrategy : IStorageSettingsStrategy
+    public class JsonStorageSettingsStrategy : GenericStorageSettingsStrategy
     {
         private static string _jsonFileName;
-        private static List<BasicStorageSetup> _setups;
 
         /// <summary>
         /// 
@@ -22,17 +21,11 @@ namespace RC.Infrastructure.Setup
         public JsonStorageSettingsStrategy(string jsonFileName)
         {
             _jsonFileName = jsonFileName;
-            DeserializeAllSetups();
-        }
-        
-        public IStorageSetup GetSetup(Uri uri)
-        {
-           return _setups.Where(x => x.Uri == uri).Single();
         }
 
-        private static void DeserializeAllSetups()
+        public override List<BasicStorageSetup> BuildSetups()
         {
-            _setups = JsonServices.Json.DeserializeFromFile<List<BasicStorageSetup>>(_jsonFileName);
+            return _setups ?? (_setups = JsonServices.Json.DeserializeFromFile<List<BasicStorageSetup>>(_jsonFileName));
         }
     }
 }
