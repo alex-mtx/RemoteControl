@@ -51,5 +51,19 @@ namespace JsonServicesTests
             //Arrange & Act & Assert
             Assert.DoesNotThrow(() => Json.DeserializeFromFile<object>(_fileName));
         }
+
+        [Test]
+        public void Should_Deserialize_Object_From_File_With_AbsolutePath_With_Slash()
+        {
+            //Arrange & Act & Assert
+            Assert.DoesNotThrow(() => Json.DeserializeFromFile<object>("/"+_fileName));
+        }
+
+        [Test]
+        public void Should_Deserialize_Object_From_File_With_AbsolutePath_With_BackSlash()
+        {
+            //Arrange & Act & Assert
+            Assert.DoesNotThrow(() => Json.DeserializeFromFile<object>(@"\"+_fileName));
+        }
     }
 }

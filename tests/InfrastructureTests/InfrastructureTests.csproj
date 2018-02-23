@@ -79,6 +79,7 @@
     <Compile Include="Factories\DBConnectionFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultAppenderManagerTests.cs" />
+    <Compile Include="Setup\GenericStorageSettingsStrategyTests.cs" />
     <Compile Include="Setup\JsonStorageSettingsStrategyTests.cs" />
     <Compile Include="Setup\StorageSettingsTests.cs" />
   </ItemGroup>

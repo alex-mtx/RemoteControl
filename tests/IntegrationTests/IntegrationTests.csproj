@@ -51,6 +51,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.cs" />
     <Compile Include="DapperCmdReceiverTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -85,6 +86,10 @@
     <ProjectReference Include="..\..\RC.Interfaces\RC.Interfaces.csproj">
       <Project>{f89dd292-bd82-47a8-81d1-e909bd5c9d3b}</Project>
       <Name>RC.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RC.JsonServices\RC.JsonServices.csproj">
+      <Project>{E6EE7E84-52D3-4199-8D24-831667AF56A2}</Project>
+      <Name>RC.JsonServices</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\RC.SQLiteServices\RC.SQLiteServices.csproj">
       <Project>{9256f121-189d-4e66-9a7a-d4ee58984cdc}</Project>

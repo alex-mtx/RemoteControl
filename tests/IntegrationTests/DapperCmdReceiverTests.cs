@@ -29,11 +29,10 @@ namespace IntegrationTests
             _factory = new DBConnectionFactory(connectionSettings);
         }
         [Test]
-        [Ignore("Not Full Testes")]
         public void StartReceiving_When_A_New_Cmd_Is_Available_Then_Executes_Client_Delegate()
         {
             //Arrange
-            var storageSettings = new StorageSettings(new JsonStorageSettingsStrategy("file"));
+            var storageSettings = new StorageSettings(new JsonStorageSettingsStrategy("jsonsettings.json"));
             var storageFactory = new StorageFactory(storageSettings);
             var cmdFactory = new CmdFactory(ResultAppenderManager.Instance.ResultAppender, storageFactory);
             var cmdRepository = new CmdRepository(_factory);

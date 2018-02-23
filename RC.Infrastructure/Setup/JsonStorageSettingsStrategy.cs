@@ -13,6 +13,7 @@ namespace RC.Infrastructure.Setup
     public class JsonStorageSettingsStrategy : GenericStorageSettingsStrategy
     {
         private static string _jsonFileName;
+        private List<BasicStorageSetup> _setups;
 
         /// <summary>
         /// 

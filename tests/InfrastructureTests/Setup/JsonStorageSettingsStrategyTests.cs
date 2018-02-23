@@ -55,5 +55,20 @@ namespace InfrastructureTests.Setup
             Assert.AreEqual(expectedBasicStorageSetup.Name, result.Name);
             Assert.AreEqual(expectedBasicStorageSetup.Active, result.Active);
         }
+
+        [Test, TestCaseSource("AddBasicStorageSetup")]
+        public void The_Build_Setup_Should_Return_The_Same_Of_GetSetup(IStorageSetup setup)
+        {
+            //Arrange
+            var jsonFileName = "jsonsettings.json";
+            var instance = new JsonStorageSettingsStrategy(jsonFileName);
+            var expectedSetups = instance.BuildSetups();
+            
+            //Act
+            var result = instance.GetSetup(setup.Uri);
+
+            //Assert
+            Assert.Contains(result,expectedSetups);
+        }
     }
 }

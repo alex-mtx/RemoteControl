@@ -10,9 +10,7 @@ using RC.Interfaces.Storages;
 namespace RC.Infrastructure.Setup
 {
     public abstract class GenericStorageSettingsStrategy : IStorageSettingsStrategy
-    {
-        protected static List<BasicStorageSetup> _setups;
-
+    {   
         public IStorageSetup GetSetup(Uri uri)
         {
             return BuildSetups().Single(x => x.Uri == uri);
