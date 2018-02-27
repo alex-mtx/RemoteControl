@@ -25,9 +25,9 @@ namespace IntegrationTests
 
             List<BasicStorageSetup> defaultBasicStorageList = new List<BasicStorageSetup>()
             {
-                new BasicStorageSetup(AppContext.BaseDirectory, "Uk", true),
-                new BasicStorageSetup(Path.GetDirectoryName(Path.GetDirectoryName(AppContext.BaseDirectory)), "Es", true),
-                new BasicStorageSetup(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(AppContext.BaseDirectory))), "Ftp", true)
+                new BasicStorageSetup(AppDomain.CurrentDomain.BaseDirectory, "Uk", true),
+                new BasicStorageSetup(Path.GetDirectoryName(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)), "Es", true),
+                new BasicStorageSetup(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory))), "Ftp", true)
             };
 
             var jsonBody = Json.Serialize(defaultBasicStorageList);

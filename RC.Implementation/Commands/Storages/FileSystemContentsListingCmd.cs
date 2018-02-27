@@ -1,4 +1,5 @@
-﻿using RC.Domain.Storages;
+﻿using RC.Domain.Commands;
+using RC.Domain.Storages;
 using RC.Interfaces.Appenders;
 using RC.Interfaces.Factories;
 using RC.Interfaces.Storages;
@@ -10,7 +11,7 @@ namespace RC.Implementation.Commands.Storages
     public class FileSystemContentsListingCmd: AbstractCmd<IEnumerable<IStorageObject>>
     {
         protected readonly IStorage<IStorageObject> _storage;
-        public FileSystemContentsListingCmd(IStorageFactory storageFactory , IResultAppender resultAppender, StorageCmdParamSet args) : base(resultAppender,args)
+        public FileSystemContentsListingCmd(IStorageFactory storageFactory , IResultAppender<CmdParametersSet> resultAppender, StorageCmdParamSet args) : base(resultAppender,args)
         {
             _storage = storageFactory.Create(StorageType.FileSystem,new Uri(args.Path));
         }

@@ -1,19 +1,22 @@
-﻿using RC.Interfaces.Appenders;
+﻿using RC.Domain.Commands;
+using RC.Interfaces.Appenders;
+using System;
 using System.Collections.Generic;
 
 namespace RC.Implementation.Appenders
 {
-    public class GeneralResultAppender : IResultAppender
+    public class GeneralResultAppender : IResultAppender<CmdParametersSet>
     {
-        private IEnumerable<IOutput> _outputs;
-        public GeneralResultAppender(IEnumerable<IOutput> outputs) => _outputs = outputs;
+        private IEnumerable<IOutput<CmdParametersSet>> _outputs;
+        public GeneralResultAppender(IEnumerable<IOutput<CmdParametersSet>> outputs) => _outputs = outputs;
 
-        public virtual void Append<T>(T result)
+        public void Append(CmdParametersSet context)
         {
             foreach (var output in _outputs)
             {
-                output.Send(result);
-            } 
+                output.Send(context);
+            }
         }
+        
     }
 }

@@ -1,7 +1,10 @@
-﻿namespace RC.Interfaces.Appenders
+﻿using RC.Domain.Commands;
+using System;
+
+namespace RC.Interfaces.Appenders
 {
-    public interface IOutput
+    public interface IOutput<in TContext> where TContext : CmdParametersSet
     {
-        void Send<T>(T data);
+        void Send(TContext context);
     }
 }

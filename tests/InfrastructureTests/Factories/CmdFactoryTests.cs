@@ -15,7 +15,7 @@ namespace InfrastructureTests.Factories
         [Test]
         public void Create_Should_Create_FileSystemContentsListingCmd_Instance()
         {
-            var resultAppenderMock = new Moq.Mock<IResultAppender>();
+            var resultAppenderMock = new Moq.Mock<IResultAppender<CmdParametersSet>>();
             var storageFactoryMock = new Moq.Mock<IStorageFactory>();
             var expectedCmd = new StorageCmdParamSet
             {

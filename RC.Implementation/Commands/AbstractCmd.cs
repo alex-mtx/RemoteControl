@@ -6,10 +6,10 @@ namespace RC.Implementation.Commands
 {
     public abstract class AbstractCmd<TResult> : ICmd
     {
-        protected readonly IResultAppender _resultAppender;
+        protected readonly IResultAppender<CmdParametersSet> _resultAppender;
         private CmdParametersSet _paramSet;
 
-        public AbstractCmd(IResultAppender resultAppender, CmdParametersSet args)
+        public AbstractCmd(IResultAppender<CmdParametersSet> resultAppender, CmdParametersSet args)
         {
             _resultAppender = resultAppender;
             _paramSet = args;
@@ -25,13 +25,23 @@ namespace RC.Implementation.Commands
             {
                 result = RunCommand();
                 _paramSet.Status = CmdStatus.Executed;
+                _paramSet.Result = JsonServices.Json.Serialize(result);
+
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
                 _paramSet.Status = CmdStatus.ResultedInError;
+                _paramSet.Result = JsonServices.Json.Serialize(e);
+
                 throw;
             }
-            _resultAppender.Append(result);
+            finally
+            {
+
+                _resultAppender.Append(_paramSet);
+            }
+
+            
 
         }
 

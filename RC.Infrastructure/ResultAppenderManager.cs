@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RC.Domain.Commands;
 using RC.Implementation.Appenders;
 using RC.Infrastructure.Setup;
 using RC.Interfaces.Appenders;
@@ -9,9 +10,9 @@ namespace RC.Infrastructure
     {
         private static ResultAppenderManager _instance = null;
         private static readonly object _lock = new object();
-        private static IEnumerable<IOutput> _outputs;
+        private static IEnumerable<IOutput<CmdParametersSet>> _outputs;
 
-        public IResultAppender ResultAppender { get; private set; }
+        public IResultAppender<CmdParametersSet> ResultAppender { get; private set; }
         private ResultAppenderManager()
         {
             _outputs = AppenderOutputSetup.RegisteredOutputs();

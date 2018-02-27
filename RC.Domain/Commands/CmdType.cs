@@ -4,6 +4,5 @@
     {
         Unknown = 0,
         StorageContentsListing = 1
-
     }
 }

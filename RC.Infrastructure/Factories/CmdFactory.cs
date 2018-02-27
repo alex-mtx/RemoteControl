@@ -12,7 +12,7 @@ namespace RC.Infrastructure.Factories
     {
         private IDictionary<CmdType, Func<CmdParametersSet, ICmd>> _map = new Dictionary<CmdType, Func<CmdParametersSet, ICmd>>();
 
-        public  CmdFactory(IResultAppender resultAppender, IStorageFactory storageFactory)
+        public  CmdFactory(IResultAppender<CmdParametersSet> resultAppender, IStorageFactory storageFactory)
         {
             BuildMap(resultAppender, storageFactory);
             
@@ -23,7 +23,7 @@ namespace RC.Infrastructure.Factories
         }
 
 
-        private void BuildMap(IResultAppender resultAppender, IStorageFactory storageFactory)
+        private void BuildMap(IResultAppender<CmdParametersSet> resultAppender, IStorageFactory storageFactory)
         {
 
             _map.Add(

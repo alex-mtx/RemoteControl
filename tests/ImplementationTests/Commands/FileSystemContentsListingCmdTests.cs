@@ -6,6 +6,7 @@ using System;
 using RC.Interfaces.Factories;
 using RC.Implementation.Commands.Storages;
 using RC.Domain.Storages;
+using RC.Domain.Commands;
 
 namespace ImplementationTests.Commands
 {
@@ -18,7 +19,7 @@ namespace ImplementationTests.Commands
         {
             var uri = new Uri("c:\\some.dll");
             var storageMock = new Mock<IStorage<IStorageObject>>();
-            var appenderMock = new Mock<IResultAppender>();
+            var appenderMock = new Mock<IResultAppender<CmdParametersSet>>();
             var storageFactoryMock = new Mock<IStorageFactory>();
             var cmdParam = new StorageCmdParamSet { Path = uri.ToString() };
             storageFactoryMock.Setup(x => x.Create(StorageType.FileSystem, uri)).Returns(storageMock.Object);

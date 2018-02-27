@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Appenders\DapperOutput.cs" />
     <Compile Include="CmdRepository.cs" />
     <Compile Include="AbstractRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

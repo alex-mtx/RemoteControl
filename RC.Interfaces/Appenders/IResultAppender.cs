@@ -1,7 +1,11 @@
-﻿namespace RC.Interfaces.Appenders
+﻿using RC.Domain.Commands;
+using System;
+
+namespace RC.Interfaces.Appenders
 {
-    public interface IResultAppender
+    public interface IResultAppender<in TContext> where TContext : CmdParametersSet
     {
-        void Append<T>(T result);
+        void Append(TContext context);
+
     }
 }

@@ -13,16 +13,18 @@ namespace ImplementationTests.Commands
         [Test]
         public void Should_Call_IResultAppender_Append_On_Every_Run_Call()
         {
-            var appenderMock = new Mock<IResultAppender>();
+            var appenderMock = new Mock<IResultAppender<CmdParametersSet>>();
+            CmdParametersSet parameters = new CmdParametersSet();
 
-            var cmd = new DummyCmd(appenderMock.Object);
+            var cmd = new DummyCmd(appenderMock.Object, parameters);
+            
             cmd.Run();
-            appenderMock.Verify(x => x.Append("ran"), Times.Once);
+            appenderMock.Verify(x => x.Append(parameters), Times.Once);
         }
-
+        
         private class DummyCmd : AbstractCmd<string>
         {
-            public DummyCmd(IResultAppender resultAppender) : base(resultAppender,new CmdParametersSet())
+            public DummyCmd(IResultAppender<CmdParametersSet> resultAppender, CmdParametersSet args) : base(resultAppender, args)
             {
             }
                       

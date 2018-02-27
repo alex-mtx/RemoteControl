@@ -5,6 +5,7 @@ using RC.Interfaces.Receivers;
 using RC.Interfaces.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Data.Linq.Mapping;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,7 +41,6 @@ namespace RC.DapperServices.Receivers
                 try
                 {
                     newCmds = _repository.PendingCommands();
-                    
                 }
                 catch (Exception e)
                 {
@@ -62,10 +62,10 @@ namespace RC.DapperServices.Receivers
                 try
                 {
                     handler(cmd);
+
                 }
                 catch (Exception)
                 {
-
                     throw;
                 }
             }
