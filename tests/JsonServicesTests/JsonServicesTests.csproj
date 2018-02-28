@@ -70,7 +70,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RC.JsonServices\RC.JsonServices.csproj">
+    <ProjectReference Include="..\..\RC.JsonServices\RC.JsonServices.csproj">
       <Project>{e6ee7e84-52d3-4199-8d24-831667af56a2}</Project>
       <Name>RC.JsonServices</Name>
     </ProjectReference>

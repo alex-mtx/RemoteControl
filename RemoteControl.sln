@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RC.Interfaces", "RC.Interfaces\RC.Interfaces.csproj", "{F89DD292-BD82-47A8-81D1-E909BD5C9D3B}"
 EndProject
@@ -33,7 +33,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "tests\I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RC.Domain", "RC.Domain\RC.Domain.csproj", "{05EE8DA6-9F2D-4AD5-98D1-799ED470043F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonServicesTests", "JsonServicesTests\JsonServicesTests.csproj", "{F6DD16BF-F211-4D9C-B692-5C599CC03CD6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonServicesTests", "tests\JsonServicesTests\JsonServicesTests.csproj", "{F6DD16BF-F211-4D9C-B692-5C599CC03CD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientReceiverResultTests", "tests\ClientReceiverResultTests\ClientReceiverResultTests.csproj", "{ACC40D32-64B5-44F9-BD69-C19077F87B88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -163,6 +165,14 @@ Global
 		{F6DD16BF-F211-4D9C-B692-5C599CC03CD6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F6DD16BF-F211-4D9C-B692-5C599CC03CD6}.Release|x64.ActiveCfg = Release|Any CPU
 		{F6DD16BF-F211-4D9C-B692-5C599CC03CD6}.Release|x64.Build.0 = Release|Any CPU
+		{ACC40D32-64B5-44F9-BD69-C19077F87B88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACC40D32-64B5-44F9-BD69-C19077F87B88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACC40D32-64B5-44F9-BD69-C19077F87B88}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ACC40D32-64B5-44F9-BD69-C19077F87B88}.Debug|x64.Build.0 = Debug|Any CPU
+		{ACC40D32-64B5-44F9-BD69-C19077F87B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACC40D32-64B5-44F9-BD69-C19077F87B88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACC40D32-64B5-44F9-BD69-C19077F87B88}.Release|x64.ActiveCfg = Release|Any CPU
+		{ACC40D32-64B5-44F9-BD69-C19077F87B88}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -174,6 +184,7 @@ Global
 		{CA529651-2F06-451E-B127-AFA85FA8DBCE} = {C40D986B-B20C-411E-A9B4-99A11A6B9C58}
 		{9E177F6E-025A-4AA3-94EE-367D3B79C150} = {C40D986B-B20C-411E-A9B4-99A11A6B9C58}
 		{F6DD16BF-F211-4D9C-B692-5C599CC03CD6} = {C40D986B-B20C-411E-A9B4-99A11A6B9C58}
+		{ACC40D32-64B5-44F9-BD69-C19077F87B88} = {C40D986B-B20C-411E-A9B4-99A11A6B9C58}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {ADABB925-220A-490B-9358-6EA668917CCA}

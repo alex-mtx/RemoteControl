@@ -90,5 +90,37 @@ namespace DapperServicesTests
             Assert.AreEqual(persistedCmd.Status, CmdStatus.Executed);
 
         }
+
+        [Test]
+        public void Update_Should_Change_Status_To_Executed_And_Populate_Result_Column()
+        {
+
+            var conn = _factory.CreateDbConnection();
+
+            var newCmd = new StorageCmdParamSet
+            {
+                CmdType = CmdType.StorageContentsListing,
+                RequestId = Guid.NewGuid(),
+                SentOn = DateTime.Now,
+                Path = AppDomain.CurrentDomain.BaseDirectory.ToString(),
+                Status = CmdStatus.AwaitingForExecution
+
+            };
+
+            newCmd.Status = CmdStatus.Executed;
+            newCmd.Result = "{\"name\":\"Joaquim\"}";
+
+            conn.Insert<CmdParametersSet>(newCmd);
+            var persistedCmd = conn.Get<CmdParametersSet>(1);
+
+
+
+            new CmdRepository(_factory).Update(persistedCmd);
+
+            persistedCmd = conn.Get<CmdParametersSet>(1);
+
+            Assert.AreEqual(persistedCmd.Status, CmdStatus.Executed);
+
+        }
     }
 }
