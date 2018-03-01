@@ -4,41 +4,37 @@ using RC.Interfaces.Commands;
 
 namespace RC.Implementation.Commands
 {
-    public abstract class AbstractCmd<TResult> : ICmd
+    public abstract class AbstractCmd<TParams,TResult> : ICmd 
+        where TParams : CmdParametersSet
     {
-        protected readonly IResultAppender<CmdParametersSet> _resultAppender;
-        private CmdParametersSet _paramSet;
+        protected readonly IResultAppender<TParams> _resultAppender;
+        protected TParams _paramSet;
 
-        public AbstractCmd(IResultAppender<CmdParametersSet> resultAppender, CmdParametersSet args)
+        public AbstractCmd(IResultAppender<TParams> resultAppender, TParams args)
         {
             _resultAppender = resultAppender;
             _paramSet = args;
         }
 
-      
-
         public virtual void Run()
         {
-            TResult result;
+            TResult result = default(TResult);
 
             try
             {
                 result = RunCommand();
                 _paramSet.Status = CmdStatus.Executed;
-                _paramSet.Result = JsonServices.Json.Serialize(result);
 
             }
             catch (System.Exception e)
             {
                 _paramSet.Status = CmdStatus.ResultedInError;
-                _paramSet.Result = JsonServices.Json.Serialize(e);
 
                 throw;
             }
             finally
             {
-
-                _resultAppender.Append(_paramSet);
+                _resultAppender.Append(_paramSet,result);
             }
 
             

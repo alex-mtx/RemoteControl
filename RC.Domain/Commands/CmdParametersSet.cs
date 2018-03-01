@@ -11,8 +11,5 @@ namespace RC.Domain.Commands
 
         public virtual CmdType CmdType { get; set; }
         public virtual CmdStatus Status{ get; set; }
-
-        public string Result { get; set; }
-
     }
 }

@@ -3,8 +3,8 @@ using System;
 
 namespace RC.Interfaces.Appenders
 {
-    public interface IOutput<in TContext> where TContext : CmdParametersSet
+    public interface IOutput<in TCmdParamsSet> where TCmdParamsSet : CmdParametersSet
     {
-        void Send(TContext context);
+        void Send<TResult>(CmdResult<TResult, CmdParametersSet> cmdResult);
     }
 }

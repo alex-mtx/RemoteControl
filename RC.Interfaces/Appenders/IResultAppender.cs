@@ -3,9 +3,9 @@ using System;
 
 namespace RC.Interfaces.Appenders
 {
-    public interface IResultAppender<in TContext> where TContext : CmdParametersSet
+    public interface IResultAppender<in TParams>
+        where TParams : CmdParametersSet
     {
-        void Append(TContext context);
-
+        void Append<TResult>(TParams cmdParams, TResult result) ;
     }
 }

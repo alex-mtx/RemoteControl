@@ -87,6 +87,10 @@
       <Project>{f89dd292-bd82-47a8-81d1-e909bd5c9d3b}</Project>
       <Name>RC.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RC.JsonServices\RC.JsonServices.csproj">
+      <Project>{e6ee7e84-52d3-4199-8d24-831667af56a2}</Project>
+      <Name>RC.JsonServices</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

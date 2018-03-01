@@ -10,7 +10,7 @@ using System.Data;
 
 namespace RC.DapperServices
 {
-    public class CmdRepository : AbstractRepository, ICmdRepository<CmdParametersSet>
+    public class CmdRepository : AbstractRepository, ICmdRepository<CmdParametersSet, CmdParametersSet>
     {
         public CmdRepository(IDbConnectionFactory dbConnectionFactory) : base(dbConnectionFactory)
         {
@@ -50,10 +50,27 @@ namespace RC.DapperServices
 
             }
         }
-
-        public void Update(CmdParametersSet entity)
+        public void Update(CmdParametersSet cmdParameters)
         {
-            base.Execute((IDbConnection conn,IDbTransaction tx) => conn.Update(entity,tx));
+            base.Execute((IDbConnection conn, IDbTransaction tx) => conn.Update(cmdParameters, tx));
+
+        }
+        public void Update<TCmdReturn>(CmdResult<TCmdReturn, CmdParametersSet> cmdResult)
+        {
+            string sql = "UPDATE CmdParametersSets SET Result = @Result WHERE ID = @Id";
+            
+            //intentionally doubling the round trip so the code get's much simpler.
+            
+            //1st: the "automatic" update of CmdParametersSet
+            base.Execute((IDbConnection conn, IDbTransaction tx) => 
+                conn.Update(cmdResult.CmdParamsSet, tx));
+
+            //2nd is to have the CmdResult serialized into the column Result
+            var cmdResultJson = JsonServices.Json.Serialize(cmdResult);
+
+            base.Execute((IDbConnection conn, IDbTransaction tx) =>
+                conn.Execute(sql,new { Result = cmdResultJson,  cmdResult.CmdParamsSet.Id },tx));
+
         }
     }
 }

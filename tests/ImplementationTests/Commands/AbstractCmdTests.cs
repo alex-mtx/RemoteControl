@@ -6,7 +6,7 @@ using RC.Domain.Commands;
 
 namespace ImplementationTests.Commands
 {
-    [TestFixture(Category = "Cmds", TestOf = typeof(AbstractCmd<object>))]
+    [TestFixture(Category = "Cmds", TestOf = typeof(AbstractCmd<CmdParametersSet,string>))]
 
     public class AbstractCmdTests
     {
@@ -19,10 +19,10 @@ namespace ImplementationTests.Commands
             var cmd = new DummyCmd(appenderMock.Object, parameters);
             
             cmd.Run();
-            appenderMock.Verify(x => x.Append(parameters), Times.Once);
+            appenderMock.Verify(x => x.Append(parameters,"ran"), Times.Once);
         }
         
-        private class DummyCmd : AbstractCmd<string>
+        private class DummyCmd : AbstractCmd<CmdParametersSet,string>
         {
             public DummyCmd(IResultAppender<CmdParametersSet> resultAppender, CmdParametersSet args) : base(resultAppender, args)
             {

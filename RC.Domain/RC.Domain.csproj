@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CmdResult.cs" />
     <Compile Include="Commands\CmdParametersSet.cs" />
     <Compile Include="Commands\CmdStatus.cs" />
     <Compile Include="Commands\CmdType.cs" />

@@ -21,7 +21,7 @@ namespace DapperServicesTests
             var interval = 1;
             var cmdMock = new Mock<ICmd>();
             cmdMock.Setup(x => x.Run());
-            var repoMock = new Mock<ICmdRepository<CmdParametersSet>>();
+            var repoMock = new Mock<ICmdRepository<CmdParametersSet, CmdParametersSet>>();
             repoMock.Setup(x => x.PendingCommands()).Returns(() => GenerateCmds());
             var factoryMock = new Mock<ICmdFactory<CmdParametersSet>>();
             factoryMock.Setup(x => x.Create(It.IsAny<CmdType>(), It.IsAny<CmdParametersSet>())).Returns(cmdMock.Object);

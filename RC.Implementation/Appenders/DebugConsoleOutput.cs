@@ -7,6 +7,9 @@ namespace RC.Implementation.Appenders
 {
     public class DebugConsoleOutput : IOutput<CmdParametersSet>
     {
-        public void Send(CmdParametersSet context) => Debug.WriteLine($"Context: {JsonServices.Json.Serialize(context)}");
+        public void Send<TResult>(CmdResult<TResult, CmdParametersSet> cmdResult)
+        {
+            Debug.WriteLine($"Context: {JsonServices.Json.Serialize(cmdResult)}");
+        }
     }
 }

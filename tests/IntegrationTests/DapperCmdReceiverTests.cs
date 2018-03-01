@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace IntegrationTests
 {
@@ -54,26 +55,22 @@ namespace IntegrationTests
             var cmdRepository = new CmdRepository(_factory);
             var receiver = new DapperCmdReceiver(1, cmdFactory, cmdRepository);
             var executed = false;
+            var exceptionThrown = false;
+            AppDomain.CurrentDomain.UnhandledException += (s, e) => { exceptionThrown = true; };
+            TaskScheduler.UnobservedTaskException += (s, e) => { exceptionThrown = true; };
 
             InsertCmd();
 
-            Assert.DoesNotThrow(() => { try
-                {
-                    receiver.StartReceiving((ICmd cmd) => { cmd.Run(); executed = true; });
-                }
-                catch (AggregateException ex)
-                {
-                    throw;
-                }
-            });
-
+            Assert.DoesNotThrow(() => receiver.StartReceiving((ICmd cmd) => { cmd.Run(); executed = true; }));
             Thread.Sleep(2000);
+            Assert.IsFalse(exceptionThrown,"it is not expected to have exceptions!");
             Assert.True(executed);
+
 
         }
 
         [Test]
-        [Ignore("Should verifify inner exception truncate data binary")]
+        //[Ignore("Should verifify inner exception truncate data binary")]
         public void StartReceiving_When_A_New_Cmd_Is_Available_Then_Executes_Client_Delegate_And_Throw_Exception()
         {
             //Arrange
@@ -85,8 +82,9 @@ namespace IntegrationTests
             var cmdRepository = new CmdRepository(_factory);
             var receiver = new DapperCmdReceiver(1, cmdFactory, cmdRepository);
             var executed = false;
-
+           
             InsertCmd();
+
 
             Assert.DoesNotThrow(() => {
 
@@ -112,7 +110,7 @@ namespace IntegrationTests
 
             Assert.DoesNotThrow(() => receiver.StartReceiving((ICmd cmd) => { cmd.Run(); executed = true; }));
 
-            Thread.Sleep(150000);
+            Thread.Sleep(1500);
             Assert.True(executed);
         }
 

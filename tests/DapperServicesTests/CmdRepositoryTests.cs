@@ -4,10 +4,8 @@ using NUnit.Framework;
 using RC.DapperServices;
 using RC.DBMigrations;
 using RC.Domain.Commands;
-using RC.Implementation.Commands;
 using RC.Implementation.Commands.Storages;
 using RC.Infrastructure.Factories;
-using RC.Interfaces.Factories;
 using System;
 using System.Configuration;
 using System.Linq;
@@ -62,7 +60,7 @@ namespace DapperServicesTests
         }
 
         [Test]
-        public void Update_Should_Change_Status_To_Executed()
+        public void Update_Should_Change_CmdParametersSet_Status_To_Executed()
         {
            
             var conn = _factory.CreateDbConnection();
@@ -92,7 +90,7 @@ namespace DapperServicesTests
         }
 
         [Test]
-        public void Update_Should_Change_Status_To_Executed_And_Populate_Result_Column()
+        public void Update_Should_Change_CmdResult_Status_To_Executed_And_Populate_Result_Column()
         {
 
             var conn = _factory.CreateDbConnection();
@@ -107,19 +105,38 @@ namespace DapperServicesTests
 
             };
 
-            newCmd.Status = CmdStatus.Executed;
-            newCmd.Result = "{\"name\":\"Joaquim\"}";
 
-            conn.Insert<CmdParametersSet>(newCmd);
-            var persistedCmd = conn.Get<CmdParametersSet>(1);
+            conn.Execute(@"INSERT INTO [CmdParametersSets] ([RequestId], [SentOn],[CmdType], [Path],[Status]) VALUES (@RequestId,@SentOn,@CmdType,@Path,@Status);", new
+            {
+                newCmd.RequestId,
+                newCmd.SentOn,
+                newCmd.CmdType,
+                newCmd.Path,
+                newCmd.Status
+            });
+
+            var persistedCmd = conn.QuerySingle<StorageCmdParamSet>("Select * FROM [CmdParametersSets] WHERE Id = @Id", new { Id = 1 });
+
+            persistedCmd.Status = CmdStatus.Executed;
+            var cmdResult = new CmdResult<string, CmdParametersSet>
+            {
+                CmdParamsSet = persistedCmd,
+                Result = "new result"
+            };
+            var expectedJsonResultData = RC.JsonServices.Json.Serialize(cmdResult);
 
 
+            //Act
+            new CmdRepository(_factory).Update(cmdResult);
 
-            new CmdRepository(_factory).Update(persistedCmd);
+            //1st Get Updated Copy of parameter
+            var actualPersistedCmd = conn.QuerySingle<StorageCmdParamSet>("Select * FROM [CmdParametersSets] WHERE Id = @Id", new { Id = 1 });
 
-            persistedCmd = conn.Get<CmdParametersSet>(1);
+            //2nd now only the Result, as it is not part of any Type
+            var actualResultData = conn.ExecuteScalar<string>("SELECT Result FROM [CmdParametersSets] WHERE Id=@Id", new { persistedCmd.Id });
 
-            Assert.AreEqual(persistedCmd.Status, CmdStatus.Executed);
+            Assert.AreEqual(actualPersistedCmd.Status, CmdStatus.Executed);
+            Assert.AreEqual(expectedJsonResultData, actualResultData);
 
         }
     }

@@ -129,6 +129,10 @@
       <Project>{F89DD292-BD82-47A8-81D1-E909BD5C9D3B}</Project>
       <Name>RC.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\RC.JsonServices\RC.JsonServices.csproj">
+      <Project>{e6ee7e84-52d3-4199-8d24-831667af56a2}</Project>
+      <Name>RC.JsonServices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\RC.SQLiteServices\RC.SQLiteServices.csproj">
       <Project>{9256f121-189d-4e66-9a7a-d4ee58984cdc}</Project>
       <Name>RC.SQLiteServices</Name>

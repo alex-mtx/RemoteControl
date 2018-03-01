@@ -13,12 +13,12 @@ namespace RC.DapperServices.Receivers
 {
     public class DapperCmdReceiver : AbstractCmdReceiver
     {
-        private readonly ICmdRepository<CmdParametersSet> _repository;
+        private readonly ICmdRepository<CmdParametersSet, CmdParametersSet> _repository;
         private readonly int _intervalInSeconds;
         private readonly ICmdFactory<CmdParametersSet> _cmdFactory;
         private bool Receive { get; set; }
 
-        public DapperCmdReceiver(int intervalInSeconds, ICmdFactory<CmdParametersSet> cmdFactory, ICmdRepository<CmdParametersSet> repository)
+        public DapperCmdReceiver(int intervalInSeconds, ICmdFactory<CmdParametersSet> cmdFactory, ICmdRepository<CmdParametersSet, CmdParametersSet> repository)
         {
             Receive = false;
             _intervalInSeconds = intervalInSeconds;

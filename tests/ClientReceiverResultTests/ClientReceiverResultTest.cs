@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json;
 using NUnit.Framework;
+using RC.Domain.Commands;
+using RC.Implementation.Commands.Storages;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClientReceiverResultTests
 {
@@ -13,48 +11,23 @@ namespace ClientReceiverResultTests
     {
 
         [Test]
-        [Ignore("Missing Implementation and behavior")]
-        public void Should_Deserialize_Json_Result_To_Specified_Type()
+        public void Should_Deserialize_Json_Result_To_Specified_CmdResult_Type()
         {
-            var person = new Person()
-            {
-                Name = "Joaquim",
-                Age = 30
-            };
+           string cmdResultJson = @"{
+                                    ""Result"":""new result"",
+                                    ""CmdParamsSet"":{
+                                                    ""Path"":""C:\\dev\\git\\RemoteControl\\tests\\DapperServicesTests\\bin\\Debug\\"",
+                                    ""Id"":1,
+                                    ""RequestId"":""8925640c-ecf6-4f8c-b6c4-bc73b5354210"",
+                                    ""SentOn"":""2018-03-01T17:26:37.147"",
+                                    ""CmdType"":1,
+                                    ""Status"":2}}";
 
-
-            var personJsonString = JsonConvert.SerializeObject(person);
-
-            var json = new Json<Person>();
-            Type type = typeof(Person);
-            var actualPerson = json.Deserialize(personJsonString);
-
-            //actualPerson = JsonConvert.DeserializeObject(personJsonString, expected);
-
-            Assert.AreEqual(person.Age, actualPerson.Age);
-
+            CmdResult<string, StorageCmdParamSet> cmdResult = JsonConvert.DeserializeObject<CmdResult<string, StorageCmdParamSet>>(cmdResultJson);
+            Assert.AreEqual("new result", cmdResult.Result);
+            Assert.AreEqual(Guid.Parse("8925640c-ecf6-4f8c-b6c4-bc73b5354210"), cmdResult.CmdParamsSet.RequestId);
         }
 
-        private class Person
-        {
-            public Person()
-            {
-            }
-
-            public string Name { get; set; }
-            public int Age { get; set; }
-        }
-
-        private class Json<T>
-        {
-            public Json()
-            {
-            }
-
-            internal T Deserialize(string personJsonString)
-            {
-                return JsonConvert.DeserializeObject<T>(personJsonString);
-            }
-        }
+    
     }
 }

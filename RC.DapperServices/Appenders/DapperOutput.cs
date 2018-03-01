@@ -11,17 +11,17 @@ namespace RC.DapperServices.Appenders
 {
     public class DapperOutput : IOutput<CmdParametersSet>
     {
-        private ICmdRepository<CmdParametersSet> _repository;
+        private ICmdRepository<CmdParametersSet, CmdParametersSet> _repository;
 
-        public DapperOutput(ICmdRepository<CmdParametersSet> repository)
+        public DapperOutput(ICmdRepository<CmdParametersSet, CmdParametersSet> repository)
         {
             _repository = repository;
         }
 
-        public void Send(CmdParametersSet context)
+        public void Send<TResult>(CmdResult<TResult, CmdParametersSet> cmdResult)
         {
-            _repository.Update(context);
-        }
+            _repository.Update(cmdResult);
 
+        }
     }
 }

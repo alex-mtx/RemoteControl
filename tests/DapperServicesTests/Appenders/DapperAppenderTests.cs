@@ -18,13 +18,13 @@ namespace DapperServicesTests.Appenders
         [Test]
         public void Should_Call_Repository_Update_When_Send_Is_Called()
         {
-            var repoMock = new Mock<ICmdRepository<CmdParametersSet>>();
+            var repoMock = new Mock<ICmdRepository<CmdParametersSet, CmdParametersSet>>();
             var param = new CmdParametersSet();
             var output = new DapperOutput(repoMock.Object);
+            var cmdResult = new CmdResult<string, CmdParametersSet>();
+            output.Send(cmdResult);
 
-            output.Send(param);
-
-            repoMock.Verify(x => x.Update(param));
+            repoMock.Verify(x => x.Update(cmdResult));
         }
        
 
