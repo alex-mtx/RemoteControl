@@ -1,6 +1,7 @@
 ﻿using RC.Domain.Commands;
 using RC.Interfaces.Appenders;
 using RC.Interfaces.Commands;
+using System;
 
 namespace RC.Implementation.Commands
 {
@@ -24,17 +25,15 @@ namespace RC.Implementation.Commands
             {
                 result = RunCommand();
                 _paramSet.Status = CmdStatus.Executed;
+                _resultAppender.Append(_paramSet, result);
 
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 _paramSet.Status = CmdStatus.ResultedInError;
+                _resultAppender.Append(_paramSet, e);
 
                 throw;
-            }
-            finally
-            {
-                _resultAppender.Append(_paramSet,result);
             }
 
             

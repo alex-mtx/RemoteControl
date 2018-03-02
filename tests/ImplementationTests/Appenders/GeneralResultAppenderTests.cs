@@ -3,12 +3,13 @@ using NUnit.Framework;
 using RC.Domain.Commands;
 using RC.Implementation.Appenders;
 using RC.Interfaces.Appenders;
+using System;
 using System.Collections.Generic;
 
 namespace ImplementationTests.Appenders
 {
     [TestFixture(Category = "Appenders", TestOf = typeof(GeneralResultAppender))]
-    public partial class AppenderTests
+    public partial class GeneralResultAppenderTests
     {
 
         [Test]

@@ -57,7 +57,7 @@ namespace RC.DapperServices
         }
         public void Update<TCmdReturn>(CmdResult<TCmdReturn, CmdParametersSet> cmdResult)
         {
-            string sql = "UPDATE CmdParametersSets SET Result = @Result WHERE ID = @Id";
+            string sql = "UPDATE CmdParametersSets SET CmdResultJson = @CmdResult, Result = @Result WHERE ID = @Id";
             
             //intentionally doubling the round trip so the code get's much simpler.
             
@@ -65,11 +65,12 @@ namespace RC.DapperServices
             base.Execute((IDbConnection conn, IDbTransaction tx) => 
                 conn.Update(cmdResult.CmdParamsSet, tx));
 
-            //2nd is to have the CmdResult serialized into the column Result
+            //2nd is to have the CmdResult and CmdResult.Result serialized and persisted into the columns CmdResultJson and Result respectively
             var cmdResultJson = JsonServices.Json.Serialize(cmdResult);
+            var resultJson = JsonServices.Json.Serialize(cmdResult.Result);
 
             base.Execute((IDbConnection conn, IDbTransaction tx) =>
-                conn.Execute(sql,new { Result = cmdResultJson,  cmdResult.CmdParamsSet.Id },tx));
+                conn.Execute(sql,new { CmdResult = cmdResultJson, Result = resultJson,  cmdResult.CmdParamsSet.Id },tx));
 
         }
     }

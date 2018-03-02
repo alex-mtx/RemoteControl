@@ -8,8 +8,6 @@ using System.Collections.Generic;
 
 namespace RC.Infrastructure.Factories
 {
-    //this singleton follows fourth Jon Skeet's version http://csharpindepth.com/Articles/General/Singleton.aspx 
-
     public sealed class StorageFactory : IStorageFactory
     {
         private readonly IDictionary<StorageType, Func<Uri, IStorage<IStorageObject>>> _map;

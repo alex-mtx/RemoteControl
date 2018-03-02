@@ -72,7 +72,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Appenders\AppenderTests.cs" />
+    <Compile Include="Appenders\GeneralResultAppenderTests.cs" />
     <Compile Include="Commands\AbstractCmdTests.cs" />
     <Compile Include="Commands\FileSystemContentsListingCmdTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

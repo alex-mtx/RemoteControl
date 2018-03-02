@@ -7,14 +7,18 @@ using RC.DBMigrations;
 using RC.Domain.Commands;
 using RC.Implementation.Appenders;
 using RC.Implementation.Commands.Storages;
+using RC.Implementation.Storages;
 using RC.Infrastructure;
 using RC.Infrastructure.Factories;
 using RC.Infrastructure.Setup;
 using RC.Interfaces.Appenders;
 using RC.Interfaces.Commands;
+using RC.Interfaces.Infrastructure;
+using RC.Interfaces.Storages;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -59,7 +63,7 @@ namespace IntegrationTests
             AppDomain.CurrentDomain.UnhandledException += (s, e) => { exceptionThrown = true; };
             TaskScheduler.UnobservedTaskException += (s, e) => { exceptionThrown = true; };
 
-            InsertCmd();
+            InsertCmd(AppDomain.CurrentDomain.BaseDirectory);
 
             Assert.DoesNotThrow(() => receiver.StartReceiving((ICmd cmd) => { cmd.Run(); executed = true; }));
             Thread.Sleep(2000);
@@ -70,30 +74,41 @@ namespace IntegrationTests
         }
 
         [Test]
-        //[Ignore("Should verifify inner exception truncate data binary")]
-        public void StartReceiving_When_A_New_Cmd_Is_Available_Then_Executes_Client_Delegate_And_Throw_Exception()
+        public void StartReceiving_When_Cmd_Throws_Exception_Persist_The_Result_With_Exception()
         {
             //Arrange
-            var storageSettings = new StorageSettings(new JsonStorageSettingsStrategy("jsonsettings.json"));
-            var storageFactory = new StorageFactory(storageSettings);
+            var storageFactory = new StorageFactory(new DummyStorageSettings());
 
             var resultAppender = new GeneralResultAppender(RegisteredOutputs());
             var cmdFactory = new CmdFactory(resultAppender, storageFactory);
             var cmdRepository = new CmdRepository(_factory);
             var receiver = new DapperCmdReceiver(1, cmdFactory, cmdRepository);
-            var executed = false;
-           
-            InsertCmd();
 
+            InsertCmd("z:\\"); //this is a non existing path, so the listing command will throw an exception
 
-            Assert.DoesNotThrow(() => {
-
-                    receiver.StartReceiving((ICmd cmd) => { cmd.Run(); executed = true; new Exception(); });
-            });
-
+            Assert.DoesNotThrow(() => receiver.StartReceiving((ICmd cmd) => { cmd.Run(); }));
             Thread.Sleep(2000);
-            Assert.True(executed);
+            var persistedCmdResult = GetPersistedResult<Exception, StorageCmdParamSet>();
+            Assert.IsAssignableFrom(typeof(Exception), persistedCmdResult.Result);
+            Assert.AreEqual(CmdStatus.ResultedInError, persistedCmdResult.CmdParamsSet.Status);
 
+        }
+
+        private CmdResult<TResult,TCmdParams> GetPersistedResult<TResult,TCmdParams>() where TCmdParams : CmdParametersSet
+        {
+            var actualResultData = _factory.CreateDbConnection().ExecuteScalar<string>("SELECT CmdResultJson FROM [CmdParametersSets] WHERE Id= 1");
+
+            var persistedCmdResult = RC.JsonServices.Json.Deserialize<CmdResult<TResult, TCmdParams>>(actualResultData);
+            return persistedCmdResult;
+        }
+
+        private class DummyStorageSettings : IStorageSettings
+        {
+          
+            public IStorageSetup GetSetup(Uri uri)
+            {
+                return new BasicStorageSetup(uri.AbsolutePath, "fake repo", true);
+            }
         }
 
         [Test]
@@ -106,7 +121,7 @@ namespace IntegrationTests
             var receiver = new DapperCmdReceiver(1, cmdFactory, cmdRepository);
             var executed = false;
 
-            InsertCmd();
+            InsertCmd(AppDomain.CurrentDomain.BaseDirectory);
 
             Assert.DoesNotThrow(() => receiver.StartReceiving((ICmd cmd) => { cmd.Run(); executed = true; }));
 
@@ -114,7 +129,7 @@ namespace IntegrationTests
             Assert.True(executed);
         }
 
-        private void InsertCmd()
+        private void InsertCmd(string path)
         {
             using (var conn = _factory.CreateDbConnection())
             {
@@ -123,7 +138,7 @@ namespace IntegrationTests
                     CmdType = CmdType.StorageContentsListing,
                     RequestId = Guid.NewGuid(),
                     SentOn = DateTime.Now,
-                    Path = new Uri(AppDomain.CurrentDomain.BaseDirectory).AbsolutePath,
+                    Path = new Uri(path).AbsolutePath,
                     Status = CmdStatus.AwaitingForExecution
 
                 };

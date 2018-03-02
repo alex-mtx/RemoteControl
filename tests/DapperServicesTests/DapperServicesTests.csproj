@@ -92,7 +92,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Appenders\DapperAppenderTests.cs" />
+    <Compile Include="Appenders\DapperOutputTests.cs" />
     <Compile Include="CmdRepositoryTests.cs" />
     <Compile Include="DapperCmdReceiverTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

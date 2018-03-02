@@ -133,10 +133,67 @@ namespace DapperServicesTests
             var actualPersistedCmd = conn.QuerySingle<StorageCmdParamSet>("Select * FROM [CmdParametersSets] WHERE Id = @Id", new { Id = 1 });
 
             //2nd now only the Result, as it is not part of any Type
-            var actualResultData = conn.ExecuteScalar<string>("SELECT Result FROM [CmdParametersSets] WHERE Id=@Id", new { persistedCmd.Id });
+            var actualResultData = conn.ExecuteScalar<string>("SELECT CmdResultJson FROM [CmdParametersSets] WHERE Id=@Id", new { persistedCmd.Id });
 
-            Assert.AreEqual(actualPersistedCmd.Status, CmdStatus.Executed);
+            Assert.AreEqual(CmdStatus.Executed,actualPersistedCmd.Status );
             Assert.AreEqual(expectedJsonResultData, actualResultData);
+
+        }
+
+
+        [Test]
+        public void Update_Should_Change_CmdResult_Status_To_ResultedInError_And_Populate_Result_With_Exception()
+        {
+
+            var conn = _factory.CreateDbConnection();
+            var exception = new ArgumentException("unknown type", "paramName");
+
+            var newCmd = new StorageCmdParamSet
+            {
+                CmdType = CmdType.StorageContentsListing,
+                RequestId = Guid.NewGuid(),
+                SentOn = DateTime.Now,
+                Path = AppDomain.CurrentDomain.BaseDirectory.ToString(),
+                Status = CmdStatus.AwaitingForExecution
+
+            };
+
+
+            conn.Execute(@"INSERT INTO [CmdParametersSets] ([RequestId], [SentOn],[CmdType], [Path],[Status]) VALUES (@RequestId,@SentOn,@CmdType,@Path,@Status);", new
+            {
+                newCmd.RequestId,
+                newCmd.SentOn,
+                newCmd.CmdType,
+                newCmd.Path,
+                newCmd.Status
+            });
+
+            var persistedCmd = conn.QuerySingle<StorageCmdParamSet>("Select * FROM [CmdParametersSets] WHERE Id = @Id", new { Id = 1 });
+
+            persistedCmd.Status = CmdStatus.ResultedInError;
+            var cmdResult = new CmdResult<ArgumentException, CmdParametersSet>
+            {
+                CmdParamsSet = persistedCmd,
+                Result = exception
+            };
+            var expectedJsonResultData = RC.JsonServices.Json.Serialize(cmdResult);
+
+
+            //Act
+            new CmdRepository(_factory).Update(cmdResult);
+
+            //1st Get Updated Copy of parameter
+            var actualPersistedCmd = conn.QuerySingle<StorageCmdParamSet>("Select * FROM [CmdParametersSets] WHERE Id = @Id", new { Id = 1 });
+
+            //2nd now only the Result (json), as it is not part of any Type
+            var actualResultData = conn.ExecuteScalar<string>("SELECT CmdResultJson FROM [CmdParametersSets] WHERE Id=@Id", new { persistedCmd.Id });
+
+            CmdResult<ArgumentException, StorageCmdParamSet> persistedCmdResult = RC.JsonServices.Json.Deserialize<CmdResult<ArgumentException, StorageCmdParamSet>>(actualResultData);
+
+
+            Assert.AreEqual(CmdStatus.ResultedInError, actualPersistedCmd.Status);
+            Assert.AreEqual(expectedJsonResultData, actualResultData);
+            Assert.IsAssignableFrom(exception.GetType(), actual: persistedCmdResult.Result);
 
         }
     }
