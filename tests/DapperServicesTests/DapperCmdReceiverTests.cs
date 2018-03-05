@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using RC.DapperServices.Receivers;
 using RC.Domain.Commands;
+using RC.Domain.Commands.Storages;
 using RC.Implementation.Commands.Storages;
 using RC.Interfaces.Commands;
 using RC.Interfaces.Factories;

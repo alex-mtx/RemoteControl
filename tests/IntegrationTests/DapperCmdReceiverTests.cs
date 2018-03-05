@@ -5,6 +5,7 @@ using RC.DapperServices.Appenders;
 using RC.DapperServices.Receivers;
 using RC.DBMigrations;
 using RC.Domain.Commands;
+using RC.Domain.Commands.Storages;
 using RC.Implementation.Appenders;
 using RC.Implementation.Commands.Storages;
 using RC.Implementation.Storages;
@@ -139,17 +140,19 @@ namespace IntegrationTests
                     RequestId = Guid.NewGuid(),
                     SentOn = DateTime.Now,
                     Path = new Uri(path).AbsolutePath,
-                    Status = CmdStatus.AwaitingForExecution
+                    Status = CmdStatus.AwaitingForExecution,
+                    Issuer = "me"
 
                 };
 
-                conn.Execute(@"INSERT INTO [CmdParametersSets] ([RequestId], [SentOn],[CmdType], [Path],[Status]) VALUES (@RequestId,@SentOn,@CmdType,@Path,@Status);", new
+                conn.Execute(@"INSERT INTO [CmdParametersSets] ([RequestId], [SentOn],[CmdType], [Path],[Status],[Issuer]) VALUES (@RequestId,@SentOn,@CmdType,@Path,@Status,@Issuer);", new
                 {
                     expectedCmd.RequestId,
                     expectedCmd.SentOn,
                     expectedCmd.CmdType,
                     expectedCmd.Path,
-                    expectedCmd.Status
+                    expectedCmd.Status,
+                    expectedCmd.Issuer
                 });
             }
         }

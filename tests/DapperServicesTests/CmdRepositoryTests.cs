@@ -4,6 +4,7 @@ using NUnit.Framework;
 using RC.DapperServices;
 using RC.DBMigrations;
 using RC.Domain.Commands;
+using RC.Domain.Commands.Storages;
 using RC.Implementation.Commands.Storages;
 using RC.Infrastructure.Factories;
 using System;

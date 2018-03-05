@@ -7,6 +7,7 @@ using RC.Interfaces.Factories;
 using RC.Implementation.Commands.Storages;
 using RC.Domain.Storages;
 using RC.Domain.Commands;
+using RC.Domain.Commands.Storages;
 
 namespace ImplementationTests.Commands
 {

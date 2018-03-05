@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
 using NUnit.Framework;
 using RC.Domain.Commands;
+using RC.Domain.Commands.Storages;
 using RC.Implementation.Commands.Storages;
 using System;
+using System.Collections.Generic;
 
 namespace ClientReceiverResultTests
 {
@@ -26,6 +28,13 @@ namespace ClientReceiverResultTests
             CmdResult<string, StorageCmdParamSet> cmdResult = JsonConvert.DeserializeObject<CmdResult<string, StorageCmdParamSet>>(cmdResultJson);
             Assert.AreEqual("new result", cmdResult.Result);
             Assert.AreEqual(Guid.Parse("8925640c-ecf6-4f8c-b6c4-bc73b5354210"), cmdResult.CmdParamsSet.RequestId);
+        }
+
+        [Test]
+        public void Should_Issue_StorageListingCmd()
+        {
+            //var cmdManager = new CmdManager();
+            //cmdManager.Issue(CmdType.StorageContentsListing)
         }
 
     

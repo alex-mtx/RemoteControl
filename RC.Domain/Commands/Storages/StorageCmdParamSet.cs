@@ -1,7 +1,7 @@
 ﻿using RC.Domain.Commands;
 using System;
 
-namespace RC.Implementation.Commands.Storages
+namespace RC.Domain.Commands.Storages
 {
     public class StorageCmdParamSet : CmdParametersSet
     {

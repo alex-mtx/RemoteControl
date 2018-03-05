@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Dapper.Contrib.Extensions;
 using RC.Domain.Commands;
+using RC.Domain.Commands.Storages;
 using RC.Implementation.Commands.Storages;
 using RC.Interfaces.Factories;
 using RC.Interfaces.Repositories;
