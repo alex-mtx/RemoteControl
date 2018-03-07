@@ -1,4 +1,5 @@
-﻿using RC.Interfaces.Storages;
+﻿using RC.Domain.Storages;
+using RC.Interfaces.Storages;
 using System.Collections.Generic;
 
 namespace RC.Implementation.Storages

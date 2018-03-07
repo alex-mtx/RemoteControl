@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using RC.Interfaces.Storages;
 
-namespace RC.Implementation.Storages
+namespace RC.Domain.Storages
 {
-    public class SimpleStorageObject : IStorageObject
+    public class SimpleStorageObject 
     {
         public Uri Uri { get; private set; }
 

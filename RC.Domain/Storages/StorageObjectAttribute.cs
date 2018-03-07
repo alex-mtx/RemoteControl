@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RC.Interfaces.Storages
+namespace RC.Domain.Storages
 {
     [Flags]
     public enum StorageObjectAttribute

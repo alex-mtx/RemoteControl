@@ -8,15 +8,15 @@ using System.Collections.Generic;
 
 namespace RC.Implementation.Commands.Storages
 {
-    public class FileSystemContentsListingCmd: AbstractCmd<StorageCmdParamSet,IEnumerable<IStorageObject>>
+    public class FileSystemContentsListingCmd: AbstractCmd<StorageCmdParamSet,IEnumerable<SimpleStorageObject>>
     {
-        protected readonly IStorage<IStorageObject> _storage;
+        protected readonly IStorage<SimpleStorageObject> _storage;
         public FileSystemContentsListingCmd(IStorageFactory storageFactory , IResultAppender<StorageCmdParamSet> resultAppender, StorageCmdParamSet args) : base(resultAppender,args)
         {
             _storage = storageFactory.Create(StorageType.FileSystem,new Uri(args.Path));
         }
 
-        protected override IEnumerable<IStorageObject> RunCommand()
+        protected override IEnumerable<SimpleStorageObject> RunCommand()
         {
             return _storage.Contents();
         }

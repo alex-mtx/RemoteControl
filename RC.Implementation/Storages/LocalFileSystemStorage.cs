@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using RC.Interfaces.Storages;
 using System.Linq;
+using RC.Domain.Storages;
 
 namespace RC.Implementation.Storages
 {

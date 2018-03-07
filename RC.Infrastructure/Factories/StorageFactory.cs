@@ -10,7 +10,7 @@ namespace RC.Infrastructure.Factories
 {
     public sealed class StorageFactory : IStorageFactory
     {
-        private readonly IDictionary<StorageType, Func<Uri, IStorage<IStorageObject>>> _map;
+        private readonly IDictionary<StorageType, Func<Uri, IStorage<SimpleStorageObject>>> _map;
         private readonly IStorageSettings _storageSettings;
 
         public StorageFactory(IStorageSettings storageSettings)
@@ -19,14 +19,14 @@ namespace RC.Infrastructure.Factories
             _map = BuildMap();
         }
         
-        public IStorage<IStorageObject> Create(StorageType type, Uri storageUri)
+        public IStorage<SimpleStorageObject> Create(StorageType type, Uri storageUri)
         {
             return _map[type](storageUri);
         }
 
-        private IDictionary<StorageType, Func<Uri, IStorage<IStorageObject>>> BuildMap()
+        private IDictionary<StorageType, Func<Uri, IStorage<SimpleStorageObject>>> BuildMap()
         {
-            return new Dictionary<StorageType, Func<Uri, IStorage<IStorageObject>>>
+            return new Dictionary<StorageType, Func<Uri, IStorage<SimpleStorageObject>>>
             {
                 {StorageType.FileSystem, (Uri uri) => new LocalFileSystemStorage(_storageSettings.GetSetup(uri)) }
             };

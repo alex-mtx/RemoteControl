@@ -19,7 +19,7 @@ namespace ImplementationTests.Commands
         public void Should_Call_Storage_Contents()
         {
             var uri = new Uri("c:\\some.dll");
-            var storageMock = new Mock<IStorage<IStorageObject>>();
+            var storageMock = new Mock<IStorage<SimpleStorageObject>>();
             var appenderMock = new Mock<IResultAppender<CmdParametersSet>>();
             var storageFactoryMock = new Mock<IStorageFactory>();
             var cmdParam = new StorageCmdParamSet { Path = uri.ToString() };

@@ -6,6 +6,6 @@ namespace RC.Interfaces.Factories
 {
     public interface IStorageFactory
     {
-        IStorage<IStorageObject> Create(StorageType type, Uri storageUri);
+        IStorage<SimpleStorageObject> Create(StorageType type, Uri storageUri);
     }
 }

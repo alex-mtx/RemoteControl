@@ -1,21 +1,21 @@
 ﻿using Newtonsoft.Json;
 using NUnit.Framework;
+using RC.Client.Interfaces;
 using RC.Domain.Commands;
 using RC.Domain.Commands.Storages;
-using RC.Implementation.Commands.Storages;
 using System;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ClientReceiverResultTests
 {
-    [TestFixture(Category = "ClientReceiverResult")]
-    public class ClientReceiverResultTest
+    [TestFixture(Category = "ClientResultReceiver")]
+    public class ClientTests
     {
 
         [Test]
         public void Should_Deserialize_Json_Result_To_Specified_CmdResult_Type()
         {
-           string cmdResultJson = @"{
+            string cmdResultJson = @"{
                                     ""Result"":""new result"",
                                     ""CmdParamsSet"":{
                                                     ""Path"":""C:\\dev\\git\\RemoteControl\\tests\\DapperServicesTests\\bin\\Debug\\"",
@@ -30,13 +30,25 @@ namespace ClientReceiverResultTests
             Assert.AreEqual(Guid.Parse("8925640c-ecf6-4f8c-b6c4-bc73b5354210"), cmdResult.CmdParamsSet.RequestId);
         }
 
+
         [Test]
-        public void Should_Issue_StorageListingCmd()
+        public async void Tests()
         {
-            //var cmdManager = new CmdManager();
-            //cmdManager.Issue(CmdType.StorageContentsListing)
+            var remoteCmdCaller = new RemoteCommandCaller();
+            var result = await remoteCmdCaller.CallAsync<string, CmdParametersSet>(new CmdParametersSet());
+
         }
 
-    
+        private class RemoteCommandCaller : IRemoteCmdCaller
+        {
+            public RemoteCommandCaller()
+            {
+            }
+
+            public  async Task<CmdResult<TResult, TCmdParamsSet>> CallAsync<TResult, TCmdParamsSet>(TCmdParamsSet cmdParams) where TCmdParamsSet : CmdParametersSet
+            {
+                return  await Task.Run(()=>new CmdResult<TResult, TCmdParamsSet>(default(TResult), cmdParams));
+            }
+        }
     }
 }
