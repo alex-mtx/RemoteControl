@@ -40,14 +40,14 @@ namespace RC.SQLiteServices
                 {
                     connection = new SQLiteConnection(_connectionString);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // Set the connection to null if it was created.
                     if (connection != null)
                     {
                         connection = null;
                     }
-                    throw ex;
+                    throw;
                 }
             }
             // Return the connection.

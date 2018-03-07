@@ -1,14 +1,10 @@
 ﻿using RC.Interfaces.Factories;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RC.Infrastructure.Factories
+namespace RC.Data
 {
     public class DBConnectionFactory :IDbConnectionFactory
     {
@@ -48,14 +44,14 @@ namespace RC.Infrastructure.Factories
                     connection = factory.CreateConnection();
                     connection.ConnectionString = _connectionString;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // Set the connection to null if it was created.
                     if (connection != null)
                     {
                         connection = null;
                     }
-                    throw ex;
+                    throw;
                 }
             }
             // Return the connection.

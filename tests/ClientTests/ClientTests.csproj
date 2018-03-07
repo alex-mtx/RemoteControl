@@ -48,6 +48,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.4.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
@@ -73,6 +74,10 @@
     <ProjectReference Include="..\..\Client\RC.Client\RC.Client.csproj">
       <Project>{CD66020C-2AE0-4623-A946-9BEDE472C9BF}</Project>
       <Name>RC.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RC.Data\RC.Data.csproj">
+      <Project>{0D3833B4-E778-4490-9A32-CDD313FADA58}</Project>
+      <Name>RC.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\RC.Domain\RC.Domain.csproj">
       <Project>{05ee8da6-9f2d-4ad5-98d1-799ed470043f}</Project>

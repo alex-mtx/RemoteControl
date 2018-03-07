@@ -84,6 +84,10 @@
     <Compile Include="Setup\StorageSettingsTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\RC.Data\RC.Data.csproj">
+      <Project>{0D3833B4-E778-4490-9A32-CDD313FADA58}</Project>
+      <Name>RC.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\RC.Domain\RC.Domain.csproj">
       <Project>{05EE8DA6-9F2D-4AD5-98D1-799ED470043F}</Project>
       <Name>RC.Domain</Name>

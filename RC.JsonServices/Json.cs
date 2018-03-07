@@ -43,7 +43,7 @@ namespace RC.JsonServices
                 var uri = new Uri(filePath); //Throw UriFormatException when path it's relative
                 return filePath;
             }
-            catch (UriFormatException ex) 
+            catch (UriFormatException) 
             {
                 return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filePath);
             }

@@ -33,7 +33,7 @@ namespace RC.Implementation.Storages
                 uri = new Uri(path, UriKind.Absolute);
 
             }
-            catch (UriFormatException ex)
+            catch (UriFormatException)
             {
                 throw new ArgumentException($"The provided path '{path}' is not an absolute Uri",nameof(path));
             }

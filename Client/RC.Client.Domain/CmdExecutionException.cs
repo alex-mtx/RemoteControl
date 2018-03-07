@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace RC.Client.Domain
 {
+    [Serializable]
     public class CmdExecutionException : Exception
     {
         public CmdExecutionException()

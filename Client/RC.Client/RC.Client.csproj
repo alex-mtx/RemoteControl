@@ -43,6 +43,7 @@
     <Compile Include="Commands\AbstractCmdDispatcher.cs" />
     <Compile Include="Commands\FileSystemContentsListingDispatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemoteCommandCaller.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\RC.Domain\RC.Domain.csproj">

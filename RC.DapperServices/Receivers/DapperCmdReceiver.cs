@@ -42,7 +42,7 @@ namespace RC.DapperServices.Receivers
                 {
                     newCmds = _repository.PendingCommands();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     
                     throw;

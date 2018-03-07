@@ -14,7 +14,7 @@ namespace RC.Infrastructure.Factories
         }
         protected abstract IDictionary<TCreateParam, Func<TReturn>> BuildMap();
 
-        public virtual TReturn Create(TCreateParam what)
+        public TReturn Create(TCreateParam what)
         {
             return _map[what]();
         }

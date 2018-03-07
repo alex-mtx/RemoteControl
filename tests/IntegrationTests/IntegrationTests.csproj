@@ -67,6 +67,10 @@
       <Project>{ae1a2b3c-089f-4cd4-9acc-c97338905f5d}</Project>
       <Name>RC.DapperServices</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\RC.Data\RC.Data.csproj">
+      <Project>{0D3833B4-E778-4490-9A32-CDD313FADA58}</Project>
+      <Name>RC.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\RC.DBMigrations\RC.DBMigrations.csproj">
       <Project>{3820a9d2-37c8-4e91-b70f-3ff328583007}</Project>
       <Name>RC.DBMigrations</Name>

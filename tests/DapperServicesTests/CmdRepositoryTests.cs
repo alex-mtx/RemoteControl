@@ -2,11 +2,10 @@
 using Dapper.Contrib.Extensions;
 using NUnit.Framework;
 using RC.DapperServices;
+using RC.Data;
 using RC.DBMigrations;
 using RC.Domain.Commands;
 using RC.Domain.Commands.Storages;
-using RC.Implementation.Commands.Storages;
-using RC.Infrastructure.Factories;
 using System;
 using System.Configuration;
 using System.Linq;

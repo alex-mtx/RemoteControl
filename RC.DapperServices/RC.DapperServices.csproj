@@ -70,11 +70,14 @@
   <ItemGroup>
     <Compile Include="Appenders\DapperOutput.cs" />
     <Compile Include="CmdRepository.cs" />
-    <Compile Include="AbstractRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Receivers\DapperCmdReceiver.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RC.Data\RC.Data.csproj">
+      <Project>{0d3833b4-e778-4490-9a32-cdd313fada58}</Project>
+      <Name>RC.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RC.Domain\RC.Domain.csproj">
       <Project>{05EE8DA6-9F2D-4AD5-98D1-799ED470043F}</Project>
       <Name>RC.Domain</Name>

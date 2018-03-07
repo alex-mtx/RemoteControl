@@ -1,9 +1,15 @@
-﻿using Newtonsoft.Json;
+﻿using Moq;
+using Newtonsoft.Json;
 using NUnit.Framework;
+using RC.Client;
 using RC.Client.Interfaces;
+using RC.Client.Interfaces.Repositories;
+using RC.Data;
 using RC.Domain.Commands;
 using RC.Domain.Commands.Storages;
+using RC.Interfaces.Factories;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ClientReceiverResultTests
@@ -32,23 +38,33 @@ namespace ClientReceiverResultTests
 
 
         [Test]
-        public async void Tests()
+        public async Task Tests()
         {
-            var remoteCmdCaller = new RemoteCommandCaller();
-            var result = await remoteCmdCaller.CallAsync<string, CmdParametersSet>(new CmdParametersSet());
+            var expectedCmdParams = new CmdParametersSet {
+                CmdType = CmdType.StorageContentsListing,
+                Issuer = "myself",
+                RequestId = Guid.NewGuid(),
+                Status = CmdStatus.Executed,
+                SentOn = DateTime.Now
+            };
 
+            var expectedResult = "test";
+            var expectedCmdResult = new CmdResult<string, CmdParametersSet>(expectedResult, expectedCmdParams);
+
+            var repoMock = new Mock<ICmdRepositoryAsync>();
+            repoMock.Setup(x => x.RetrieveResultAsync<string, CmdParametersSet>(It.IsAny<CmdParametersSet>())).ReturnsAsync(() => expectedCmdResult);
+            var remoteCmdCaller = new RemoteCommandCaller(repoMock.Object);
+
+            var actualCmdResult = await remoteCmdCaller.CallAsync<string, CmdParametersSet>(new CmdParametersSet());
+
+            repoMock.Verify(x => x.SendToBackendAsync(It.IsAny<CmdParametersSet>()),Times.Once);
+            repoMock.Verify(x => x.RetrieveResultAsync<string,CmdParametersSet>(It.IsAny<CmdParametersSet>()), Times.Once);
+            Assert.AreEqual(expectedResult, actualCmdResult.Result);
+            Assert.AreEqual(expectedCmdResult, actualCmdResult);
         }
 
-        private class RemoteCommandCaller : IRemoteCmdCaller
-        {
-            public RemoteCommandCaller()
-            {
-            }
+       
 
-            public  async Task<CmdResult<TResult, TCmdParamsSet>> CallAsync<TResult, TCmdParamsSet>(TCmdParamsSet cmdParams) where TCmdParamsSet : CmdParametersSet
-            {
-                return  await Task.Run(()=>new CmdResult<TResult, TCmdParamsSet>(default(TResult), cmdParams));
-            }
-        }
+       
     }
 }

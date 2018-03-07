@@ -1,8 +1,9 @@
 ﻿using RC.Interfaces.Factories;
 using System;
 using System.Data;
+using System.Threading.Tasks;
 
-namespace RC.DapperServices
+namespace RC.Data
 {
     public abstract class AbstractRepository
     {
@@ -23,11 +24,11 @@ namespace RC.DapperServices
                         query(conn);
                         tx.Commit();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         if (tx != null)
                             tx.Rollback();
-                        throw e;
+                        throw;
                     }
                 }
             }
@@ -45,11 +46,33 @@ namespace RC.DapperServices
                         query(conn,tx);
                         tx.Commit();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         if (tx != null)
                             tx.Rollback();
-                        throw e;
+                        throw;
+                    }
+                }
+            }
+        }
+
+        protected virtual async Task ExecuteAsync(Func<IDbConnection, IDbTransaction,Task> query)
+        {
+            using (IDbConnection conn = _dbConnectionFactory.CreateDbConnection())
+            {
+                conn.Open();
+                using (var tx = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        await query(conn, tx);
+                        tx.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        if (tx != null)
+                            tx.Rollback();
+                        throw;
                     }
                 }
             }

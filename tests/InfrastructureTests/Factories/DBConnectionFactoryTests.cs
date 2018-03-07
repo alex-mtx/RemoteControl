@@ -1,10 +1,5 @@
 ﻿using NUnit.Framework;
-using RC.Infrastructure.Factories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RC.Data;
 
 namespace InfrastructureTests.Factories
 {
