@@ -19,8 +19,14 @@ namespace RC.Client.Interfaces.Repositories
     public interface ICmdRepositoryAsync
     {
 
-        Task<CmdResult<TResult, TCmdParamsSet>> RetrieveResultAsync<TResult, TCmdParamsSet>(TCmdParamsSet parametersSet)
+        Task<string> RetrieveExecutedCmdResultJsonAsync<TCmdParamsSet>(TCmdParamsSet parametersSet)
           where TCmdParamsSet : CmdParametersSet;
         Task SendToBackendAsync<TCmdParams>(TCmdParams cmdParams) where TCmdParams : CmdParametersSet;
+
+        Task<TCmdParamsSet> RetrieveExecutedCmdAsync<TCmdParamsSet>(TCmdParamsSet parametersSet)
+           where TCmdParamsSet : CmdParametersSet;
+
+        Task<CmdResult<TResult, TCmdParamsSet>> RetrieveResultAsync<TResult, TCmdParamsSet>(TCmdParamsSet parametersSet,TimeSpan timeout)
+         where TCmdParamsSet : CmdParametersSet;
     }
 }

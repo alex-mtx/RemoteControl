@@ -1,5 +1,7 @@
 ﻿using FluentMigrator;
 using System;
+using RC.Data;
+using RC.Domain.Commands;
 
 namespace RC.DBMigrations
 {
@@ -8,12 +10,12 @@ namespace RC.DBMigrations
     {
         public override void Down()
         {
-            Delete.Table("[CmdParametersSets]");
+            Delete.Table(typeof(CmdParametersSet).TableName());
         }
 
         public override void Up()
         {
-            Create.Table("[CmdParametersSets]")
+            Create.Table(typeof(CmdParametersSet).TableName())
                 .WithColumn("Id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("RequestID").AsGuid().NotNullable()
                 .WithColumn("SentOn").AsDateTime().NotNullable()

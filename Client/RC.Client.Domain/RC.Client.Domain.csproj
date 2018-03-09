@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandResultRetrievalException.cs" />
     <Compile Include="ClientErrorException.cs" />
     <Compile Include="CmdExecutionException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

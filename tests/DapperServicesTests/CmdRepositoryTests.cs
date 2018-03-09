@@ -24,6 +24,8 @@ namespace DapperServicesTests
             var migrator = new DebugMigrator(connectionSettings.ConnectionString);
             migrator.Migrate("SQLServer");
             _factory = new DBConnectionFactory(connectionSettings);
+            SqlMapperExtensions.TableNameMapper += (type) => { return type.TableName(); };
+
         }
 
         [Test]
@@ -41,15 +43,7 @@ namespace DapperServicesTests
                 Status = CmdStatus.AwaitingForExecution
             };
 
-            conn.Execute(@"INSERT INTO [CmdParametersSets] ([RequestId], [SentOn],[CmdType], [Path],[Status]) VALUES (@RequestId,@SentOn,@CmdType,@Path,@Status);", new
-            {
-                expectedCmd.RequestId,
-                expectedCmd.SentOn,
-                expectedCmd.CmdType,
-                expectedCmd.Path,
-                expectedCmd.Status
-            });
-
+            conn.Insert(expectedCmd);
 
             var actualCmds = new CmdRepository(_factory).PendingCommands();
             var actualCmd = actualCmds.Single();
@@ -76,7 +70,7 @@ namespace DapperServicesTests
             };
 
           
-            conn.Insert<CmdParametersSet>(newCmd);
+            conn.Insert(newCmd);
             var persistedCmd = conn.Get<CmdParametersSet>(1);
 
             persistedCmd.Status = CmdStatus.Executed;
@@ -105,17 +99,10 @@ namespace DapperServicesTests
 
             };
 
+            conn.Insert(newCmd);
 
-            conn.Execute(@"INSERT INTO [CmdParametersSets] ([RequestId], [SentOn],[CmdType], [Path],[Status]) VALUES (@RequestId,@SentOn,@CmdType,@Path,@Status);", new
-            {
-                newCmd.RequestId,
-                newCmd.SentOn,
-                newCmd.CmdType,
-                newCmd.Path,
-                newCmd.Status
-            });
 
-            var persistedCmd = conn.QuerySingle<StorageCmdParamSet>("Select * FROM [CmdParametersSets] WHERE Id = @Id", new { Id = 1 });
+            var persistedCmd = conn.Get<StorageCmdParamSet>(1);
 
             persistedCmd.Status = CmdStatus.Executed;
             var cmdResult = new CmdResult<string, CmdParametersSet>
@@ -130,10 +117,10 @@ namespace DapperServicesTests
             new CmdRepository(_factory).Update(cmdResult);
 
             //1st Get Updated Copy of parameter
-            var actualPersistedCmd = conn.QuerySingle<StorageCmdParamSet>("Select * FROM [CmdParametersSets] WHERE Id = @Id", new { Id = 1 });
+            var actualPersistedCmd = conn.Get<StorageCmdParamSet>(1); 
 
             //2nd now only the Result, as it is not part of any Type
-            var actualResultData = conn.ExecuteScalar<string>("SELECT CmdResultJson FROM [CmdParametersSets] WHERE Id=@Id", new { persistedCmd.Id });
+            var actualResultData = conn.ExecuteScalar<string>($"SELECT CmdResultJson FROM {typeof(StorageCmdParamSet).TableName()} WHERE Id=@Id", new { persistedCmd.Id });
 
             Assert.AreEqual(CmdStatus.Executed,actualPersistedCmd.Status );
             Assert.AreEqual(expectedJsonResultData, actualResultData);
@@ -158,17 +145,9 @@ namespace DapperServicesTests
 
             };
 
+            conn.Insert(newCmd);
 
-            conn.Execute(@"INSERT INTO [CmdParametersSets] ([RequestId], [SentOn],[CmdType], [Path],[Status]) VALUES (@RequestId,@SentOn,@CmdType,@Path,@Status);", new
-            {
-                newCmd.RequestId,
-                newCmd.SentOn,
-                newCmd.CmdType,
-                newCmd.Path,
-                newCmd.Status
-            });
-
-            var persistedCmd = conn.QuerySingle<StorageCmdParamSet>("Select * FROM [CmdParametersSets] WHERE Id = @Id", new { Id = 1 });
+            var persistedCmd = conn.Get<StorageCmdParamSet>(1);
 
             persistedCmd.Status = CmdStatus.ResultedInError;
             var cmdResult = new CmdResult<ArgumentException, CmdParametersSet>
@@ -183,10 +162,10 @@ namespace DapperServicesTests
             new CmdRepository(_factory).Update(cmdResult);
 
             //1st Get Updated Copy of parameter
-            var actualPersistedCmd = conn.QuerySingle<StorageCmdParamSet>("Select * FROM [CmdParametersSets] WHERE Id = @Id", new { Id = 1 });
+            var actualPersistedCmd = conn.Get<StorageCmdParamSet>(1);
 
             //2nd now only the Result (json), as it is not part of any Type
-            var actualResultData = conn.ExecuteScalar<string>("SELECT CmdResultJson FROM [CmdParametersSets] WHERE Id=@Id", new { persistedCmd.Id });
+            var actualResultData = conn.ExecuteScalar<string>($"SELECT CmdResultJson FROM {typeof(StorageCmdParamSet).TableName()} WHERE Id=@Id", new { persistedCmd.Id }); 
 
             CmdResult<ArgumentException, StorageCmdParamSet> persistedCmdResult = RC.JsonServices.Json.Deserialize<CmdResult<ArgumentException, StorageCmdParamSet>>(actualResultData);
 

@@ -11,10 +11,13 @@ using System.Data;
 
 namespace RC.DapperServices
 {
-    public class CmdRepository : AbstractRepository, ICmdRepository<CmdParametersSet, CmdParametersSet>
+    public class CmdRepository : AbstractDataBaseRepository, ICmdRepository<CmdParametersSet, CmdParametersSet>
     {
+        private static string _cmdParametersSetTableName = typeof(CmdParametersSet).TableName();
         public CmdRepository(IDbConnectionFactory dbConnectionFactory) : base(dbConnectionFactory)
         {
+            SqlMapperExtensions.TableNameMapper += (type) => { return type.TableName(); };
+
         }
 
         public virtual IEnumerable<CmdParametersSet> PendingCommands()
@@ -26,7 +29,7 @@ namespace RC.DapperServices
         {
             //https://github.com/StackExchange/Dapper#type-switching-per-row
             var cmdParams = new List<CmdParametersSet>();
-            using (var reader = conn.ExecuteReader("SELECT * from [CmdParametersSets] WHERE [Status] = @Status",new {Status = CmdStatus.AwaitingForExecution}))
+            using (var reader = conn.ExecuteReader($"SELECT * from {_cmdParametersSetTableName} WHERE [Status] = @Status",new {Status = CmdStatus.AwaitingForExecution}))
             {
                 var storageListingParser = reader.GetRowParser<CmdParametersSet>(typeof(StorageCmdParamSet));
 
@@ -58,7 +61,6 @@ namespace RC.DapperServices
         }
         public void Update<TCmdReturn>(CmdResult<TCmdReturn, CmdParametersSet> cmdResult)
         {
-            string sql = "UPDATE CmdParametersSets SET CmdResultJson = @CmdResult, Result = @Result WHERE ID = @Id";
             
             //intentionally doubling the round trip so the code get's much simpler.
             
@@ -70,6 +72,7 @@ namespace RC.DapperServices
             var cmdResultJson = JsonServices.Json.Serialize(cmdResult);
             var resultJson = JsonServices.Json.Serialize(cmdResult.Result);
 
+            string sql = $"UPDATE {_cmdParametersSetTableName} SET CmdResultJson = @CmdResult, Result = @Result WHERE ID = @Id";
             base.Execute((IDbConnection conn, IDbTransaction tx) =>
                 conn.Execute(sql,new { CmdResult = cmdResultJson, Result = resultJson,  cmdResult.CmdParamsSet.Id },tx));
 

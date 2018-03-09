@@ -41,11 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractRepository.cs" />
+    <Compile Include="AbstractDataBaseRepository.cs" />
     <Compile Include="DBConnectionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TableNameMapping.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RC.Domain\RC.Domain.csproj">
+      <Project>{05EE8DA6-9F2D-4AD5-98D1-799ED470043F}</Project>
+      <Name>RC.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RC.Interfaces\RC.Interfaces.csproj">
       <Project>{f89dd292-bd82-47a8-81d1-e909bd5c9d3b}</Project>
       <Name>RC.Interfaces</Name>

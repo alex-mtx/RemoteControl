@@ -72,6 +72,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RC.Data\RC.Data.csproj">
+      <Project>{0d3833b4-e778-4490-9a32-cdd313fada58}</Project>
+      <Name>RC.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RC.Domain\RC.Domain.csproj">
+      <Project>{05EE8DA6-9F2D-4AD5-98D1-799ED470043F}</Project>
+      <Name>RC.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RC.Interfaces\RC.Interfaces.csproj">
       <Project>{F89DD292-BD82-47A8-81D1-E909BD5C9D3B}</Project>
       <Name>RC.Interfaces</Name>

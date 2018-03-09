@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace RC.Data
 {
-    public abstract class AbstractRepository
+    public abstract class AbstractDataBaseRepository
     {
         protected readonly string _connectionString;
         private readonly IDbConnectionFactory _dbConnectionFactory;
 
-        public AbstractRepository(IDbConnectionFactory dbConnectionFactory) => _dbConnectionFactory = dbConnectionFactory;
+        public AbstractDataBaseRepository(IDbConnectionFactory dbConnectionFactory) => _dbConnectionFactory = dbConnectionFactory;
 
         protected virtual void Execute(Action<IDbConnection> query)
         {
@@ -83,6 +83,14 @@ namespace RC.Data
             using (IDbConnection conn = _dbConnectionFactory.CreateDbConnection())
             {
                 return query(conn);
+            }
+        }
+
+        protected virtual async Task<TReturn> QueryAsync<TReturn>(Func<IDbConnection, Task<TReturn>> query)
+        {
+            using (IDbConnection conn = _dbConnectionFactory.CreateDbConnection())
+            {
+                return await query(conn);
             }
         }
     }
